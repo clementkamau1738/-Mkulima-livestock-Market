@@ -1,0 +1,91 @@
+# Rendered at container start by envsubst (${BACKEND_HOST}, ${DJANGO_ADMIN_PATH},
+# ${CSP_IMG_SRC}). nginx's own $variables are left untouched.
+
+# Keep the original scheme when a TLS proxy in front already set it.
+map $http_x_forwarded_proto $forwarded_proto {
+    default $http_x_forwarded_proto;
+    ""      $scheme;
+}
+
+# Headers both Django and nginx set; keep nginx's copy only.
+proxy_hide_header X-Frame-Options;
+proxy_hide_header X-Content-Type-Options;
+proxy_hide_header Referrer-Policy;
+proxy_hide_header Cross-Origin-Opener-Policy;
+
+upstream django {
+    server ${BACKEND_HOST};
+}
+
+server {
+    listen 8080;
+    server_name _;
+    server_tokens off;
+
+    root /usr/share/nginx/html;
+
+    # Photos are at most 5 MB; leave room for the multipart envelope.
+    client_max_body_size 6m;
+
+    gzip on;
+    gzip_types text/css application/javascript application/json image/svg+xml;
+
+    location = /healthz {
+        access_log off;
+        return 200 "ok\n";
+    }
+
+    location /api/ {
+        include /etc/nginx/snippets/security-headers.conf;
+        proxy_pass http://django;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $forwarded_proto;
+        proxy_read_timeout 120s;
+    }
+
+    location ^~ ${DJANGO_ADMIN_PATH} {
+        include /etc/nginx/snippets/security-headers.conf;
+        proxy_pass http://django;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $forwarded_proto;
+    }
+
+    # Django Admin and DRF assets, served by WhiteNoise in the backend.
+    location /static/ {
+        proxy_pass http://django;
+        proxy_set_header Host $http_host;
+    }
+
+    # Uploaded photos (MEDIA_STORAGE=local). Never executed or sniffed, and
+    # nothing in them can run if opened directly.
+    location /media/ {
+        alias /srv/media/;
+        include /etc/nginx/snippets/security-headers.conf;
+        add_header Content-Security-Policy "default-src 'none'; img-src 'self'; sandbox" always;
+        add_header Cache-Control "public, max-age=2592000" always;
+        types {
+            image/jpeg jpg jpeg;
+            image/png png;
+            image/webp webp;
+        }
+        default_type application/octet-stream;
+    }
+
+    # Hashed build assets never change.
+    location /assets/ {
+        include /etc/nginx/snippets/security-headers.conf;
+        add_header Cache-Control "public, max-age=31536000, immutable";
+        try_files $uri =404;
+    }
+
+    # The single-page app: unknown paths fall back to index.html, which is
+    # never cached so new releases are picked up at once.
+    location / {
+        include /etc/nginx/snippets/security-headers.conf;
+        add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src ${CSP_IMG_SRC}; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" always;
+        add_header Cache-Control "no-cache" always;
+        try_files $uri /index.html;
+    }
+}

@@ -1,0 +1,98 @@
+# Production-style stack. Values come from .env (copy .env.example).
+#
+#   docker compose up -d db          PostgreSQL only, for development with runserver + Vite
+#   docker compose up -d --build     Everything: http://127.0.0.1:8080 (nginx -> gunicorn)
+#
+# Defaults are secure (HTTPS redirect, secure cookies, HSTS). To try the full
+# stack over plain HTTP on your own machine, set in .env:
+#   DJANGO_SECURE_SSL_REDIRECT=False  DJANGO_SECURE_COOKIES=False  DJANGO_HSTS_SECONDS=0
+# Never use those values on a public server. See README "Deployment".
+
+x-backend: &backend
+  build: ./backend
+  image: mkulima-backend
+  env_file: .env
+  environment:
+    DJANGO_DEBUG: "False"
+    POSTGRES_HOST: db
+    POSTGRES_PORT: "5432"
+    CACHE_URL: redis://redis:6379/0
+    # nginx is one proxy; add one per extra proxy in front (e.g. a TLS
+    # terminator). Separate from DJANGO_NUM_PROXIES, which is 0 for runserver.
+    DJANGO_NUM_PROXIES: ${STACK_NUM_PROXIES:-1}
+    DJANGO_ADMIN_URL: ${DJANGO_ADMIN_URL:-django-admin/}
+    MEDIA_ROOT: /app/media
+  volumes:
+    - media:/app/media
+
+services:
+  db:
+    image: postgres:17.11-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?set POSTGRES_DB in .env}
+      POSTGRES_USER: ${POSTGRES_USER:?set POSTGRES_USER in .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    # Published on localhost only, for development and backups.
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Shared cache so rate limits are counted once across gunicorn workers.
+  redis:
+    image: redis:8.8.3-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Release step: apply migrations once, then exit. The web workers start
+  # only after it succeeds.
+  migrate:
+    <<: *backend
+    command: ["python", "manage.py", "migrate", "--noinput"]
+    restart: "no"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  backend:
+    <<: *backend
+    restart: unless-stopped
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: /api
+    image: mkulima-web
+    restart: unless-stopped
+    environment:
+      DJANGO_ADMIN_PATH: /${DJANGO_ADMIN_URL:-django-admin/}
+      # Add your object-storage or CDN origin when MEDIA_STORAGE=s3.
+      CSP_IMG_SRC: ${CSP_IMG_SRC:-'self' data:}
+    ports:
+      - "127.0.0.1:${WEB_PORT:-8080}:8080"
+    volumes:
+      - media:/srv/media:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  media:

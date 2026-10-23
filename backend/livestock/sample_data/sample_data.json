@@ -1,0 +1,506 @@
+{
+  "categories": [
+    {
+      "slug": "dairy",
+      "name": "Dairy",
+      "description": "Cows and heifers kept for milk production.",
+      "sort_order": 0
+    },
+    {
+      "slug": "beef",
+      "name": "Beef",
+      "description": "Steers and cows raised for meat and finishing.",
+      "sort_order": 1
+    },
+    {
+      "slug": "bulls",
+      "name": "Bulls",
+      "description": "Mature bulls for breeding and herd improvement.",
+      "sort_order": 2
+    },
+    {
+      "slug": "calves",
+      "name": "Calves",
+      "description": "Weaned heifer and bull calves to raise on.",
+      "sort_order": 3
+    }
+  ],
+  "listings": [
+    {
+      "slug": "friesian-heifer-njoro",
+      "title": "In-calf Friesian heifer",
+      "breed": "Friesian",
+      "category": "dairy",
+      "sex": "female",
+      "age_months": 26,
+      "weight_kg": 410,
+      "location": "Njoro, Nakuru",
+      "price_kes": 165000,
+      "status": "available",
+      "published_at": "2026-10-18T08:30:00Z",
+      "description": "Calm, well-handled heifer raised on a zero-grazing unit. The seller reports she is about five months in calf. Buyers are encouraged to arrange a veterinary check during the viewing.",
+      "images": [
+        {
+          "file": "friesian-heifer-njoro-1.webp",
+          "alt_text": "Illustration of a Friesian heifer, side view",
+          "is_primary": true,
+          "sort_order": 0
+        },
+        {
+          "file": "friesian-heifer-njoro-2.webp",
+          "alt_text": "Illustration of a Friesian heifer in the paddock",
+          "is_primary": false,
+          "sort_order": 1
+        },
+        {
+          "file": "friesian-heifer-njoro-3.webp",
+          "alt_text": "Illustration of a Friesian heifer, head and shoulders",
+          "is_primary": false,
+          "sort_order": 2
+        }
+      ]
+    },
+    {
+      "slug": "ayrshire-cow-othaya",
+      "title": "Ayrshire cow, second lactation",
+      "breed": "Ayrshire",
+      "category": "dairy",
+      "sex": "female",
+      "age_months": 48,
+      "weight_kg": 455,
+      "location": "Othaya, Nyeri",
+      "price_kes": 140000,
+      "status": "available",
+      "published_at": "2026-10-16T10:00:00Z",
+      "description": "Second-lactation Ayrshire kept on Napier grass and dairy meal. Milking records are available from the seller on request and can be reviewed before any commitment.",
+      "images": [
+        {
+          "file": "ayrshire-cow-othaya-1.webp",
+          "alt_text": "Illustration of an Ayrshire cow, side view",
+          "is_primary": true,
+          "sort_order": 0
+        },
+        {
+          "file": "ayrshire-cow-othaya-2.webp",
+          "alt_text": "Illustration of an Ayrshire cow in the paddock",
+          "is_primary": false,
+          "sort_order": 1
+        },
+        {
+          "file": "ayrshire-cow-othaya-3.webp",
+          "alt_text": "Illustration of an Ayrshire cow, head and shoulders",
+          "is_primary": false,
+          "sort_order": 2
+        }
+      ]
+    },
+    {
+      "slug": "jersey-heifer-limuru",
+      "title": "Jersey heifer, ready for service",
+      "breed": "Jersey",
+      "category": "dairy",
+      "sex": "female",
+      "age_months": 20,
+      "weight_kg": null,
+      "location": "Limuru, Kiambu",
+      "price_kes": 98000,
+      "status": "available",
+      "published_at": "2026-10-14T07:15:00Z",
+      "description": "Small-framed Jersey heifer suited to smaller plots. Used to stall feeding and handled daily. Ask the seller for her service and feeding history.",
+      "images": [
+        {
+          "file": "jersey-heifer-limuru-1.webp",
+          "alt_text": "Illustration of a Jersey heifer, side view",
+          "is_primary": true,
+          "sort_order": 0
+        },
+        {
+          "file": "jersey-heifer-limuru-2.webp",
+          "alt_text": "Illustration of a Jersey heifer in the paddock",
+          "is_primary": false,
+          "sort_order": 1
+        },
+        {
+          "file": "jersey-heifer-limuru-3.webp",
+          "alt_text": "Illustration of a Jersey heifer, head and shoulders",
+          "is_primary": false,
+          "sort_order": 2
+        }
+      ]
+    },
+    {
+      "slug": "guernsey-cow-olkalou",
+      "title": "Guernsey dairy cow",
+      "breed": "Guernsey",
+      "category": "dairy",
+      "sex": "female",
+      "age_months": 54,
+      "weight_kg": 470,
+      "location": "Ol Kalou, Nyandarua",
+      "price_kes": 125000,
+      "status": "reserved",
+      "published_at": "2026-10-09T09:45:00Z",
+      "description": "Mature Guernsey cow currently reserved pending a buyer viewing. You can still send an inquiry to be contacted if the reservation falls through.",
+      "images": [
+        {
+          "file": "guernsey-cow-olkalou-1.webp",
+          "alt_text": "Illustration of a Guernsey cow, side view",
+          "is_primary": true,
+          "sort_order": 0
+        },
+        {
+          "file": "guernsey-cow-olkalou-2.webp",
+          "alt_text": "Illustration of a Guernsey cow in the paddock",
+          "is_primary": false,
+          "sort_order": 1
+        },
+        {
+          "file": "guernsey-cow-olkalou-3.webp",
+          "alt_text": "Illustration of a Guernsey cow, head and shoulders",
+          "is_primary": false,
+          "sort_order": 2
+        }
+      ]
+    },
+    {
+      "slug": "boran-steer-nanyuki",
+      "title": "Boran steer for finishing",
+      "breed": "Boran",
+      "category": "beef",
+      "sex": "male",
+      "age_months": 30,
+      "weight_kg": 380,
+      "location": "Nanyuki, Laikipia",
+      "price_kes": 112000,
+      "status": "available",
+      "published_at": "2026-10-17T12:00:00Z",
+      "description": "Range-raised Boran steer in good body condition, used to rotational grazing. Suitable for feedlot finishing. Transport is arranged separately between buyer and seller.",
+      "images": [
+        {
+          "file": "boran-steer-nanyuki-1.webp",
+          "alt_text": "Illustration of a Boran steer, side view",
+          "is_primary": true,
+          "sort_order": 0
+        },
+        {
+          "file": "boran-steer-nanyuki-2.webp",
+          "alt_text": "Illustration of a Boran steer in the paddock",
+          "is_primary": false,
+          "sort_order": 1
+        },
+        {
+          "file": "boran-steer-nanyuki-3.webp",
+          "alt_text": "Illustration of a Boran steer, head and shoulders",
+          "is_primary": false,
+          "sort_order": 2
+        }
+      ]
+    },
+    {
+      "slug": "sahiwal-steer-kajiado",
+      "title": "Sahiwal-cross steer",
+      "breed": "Sahiwal",
+      "category": "beef",
+      "sex": "male",
+      "age_months": 28,
+      "weight_kg": null,
+      "location": "Kajiado",
+      "price_kes": 95000,
+      "status": "available",
+      "published_at": "2026-10-12T14:20:00Z",
+      "description": "Hardy Sahiwal-cross steer from a pastoral herd. Accustomed to dry-season conditions. Weight to be confirmed at viewing.",
+      "images": [
+        {
+          "file": "sahiwal-steer-kajiado-1.webp",
+          "alt_text": "Illustration of a Sahiwal-cross steer, side view",
+          "is_primary": true,
+          "sort_order": 0
+        },
+        {
+          "file": "sahiwal-steer-kajiado-2.webp",
+          "alt_text": "Illustration of a Sahiwal-cross steer in the paddock",
+          "is_primary": false,
+          "sort_order": 1
+        },
+        {
+          "file": "sahiwal-steer-kajiado-3.webp",
+          "alt_text": "Illustration of a Sahiwal-cross steer, head and shoulders",
+          "is_primary": false,
+          "sort_order": 2
+        }
+      ]
+    },
+    {
+      "slug": "boran-bull-narok",
+      "title": "Boran breeding bull",
+      "breed": "Boran",
+      "category": "bulls",
+      "sex": "male",
+      "age_months": 40,
+      "weight_kg": 620,
+      "location": "Narok",
+      "price_kes": 260000,
+      "status": "available",
+      "published_at": "2026-10-19T06:50:00Z",
+      "description": "Mature Boran bull that has run with a commercial herd. The seller can share calving records from his offspring. A breeding soundness exam by your own vet is recommended.",
+      "images": [
+        {
+          "file": "boran-bull-narok-1.webp",
+          "alt_text": "Illustration of a Boran bull, side view",
+          "is_primary": true,
+          "sort_order": 0
+        },
+        {
+          "file": "boran-bull-narok-2.webp",
+          "alt_text": "Illustration of a Boran bull in the paddock",
+          "is_primary": false,
+          "sort_order": 1
+        },
+        {
+          "file": "boran-bull-narok-3.webp",
+          "alt_text": "Illustration of a Boran bull, head and shoulders",
+          "is_primary": false,
+          "sort_order": 2
+        }
+      ]
+    },
+    {
+      "slug": "friesian-bull-eldoret",
+      "title": "Friesian bull",
+      "breed": "Friesian",
+      "category": "bulls",
+      "sex": "male",
+      "age_months": 36,
+      "weight_kg": 590,
+      "location": "Eldoret, Uasin Gishu",
+      "price_kes": 210000,
+      "status": "available",
+      "published_at": "2026-10-11T11:10:00Z",
+      "description": "Large-framed Friesian bull kept in a dedicated pen. Halter trained. Viewing by appointment only; please follow the seller’s handling guidance on site.",
+      "images": [
+        {
+          "file": "friesian-bull-eldoret-1.webp",
+          "alt_text": "Illustration of a Friesian bull, side view",
+          "is_primary": true,
+          "sort_order": 0
+        },
+        {
+          "file": "friesian-bull-eldoret-2.webp",
+          "alt_text": "Illustration of a Friesian bull in the paddock",
+          "is_primary": false,
+          "sort_order": 1
+        },
+        {
+          "file": "friesian-bull-eldoret-3.webp",
+          "alt_text": "Illustration of a Friesian bull, head and shoulders",
+          "is_primary": false,
+          "sort_order": 2
+        }
+      ]
+    },
+    {
+      "slug": "sahiwal-bull-machakos",
+      "title": "Sahiwal bull",
+      "breed": "Sahiwal",
+      "category": "bulls",
+      "sex": "male",
+      "age_months": null,
+      "weight_kg": null,
+      "location": "Machakos",
+      "price_kes": 185000,
+      "status": "available",
+      "published_at": "2026-10-05T08:00:00Z",
+      "description": "Docile Sahiwal bull from a mixed dairy and beef herd. The seller has not provided an exact age; ask for documentation at viewing.",
+      "images": [
+        {
+          "file": "sahiwal-bull-machakos-1.webp",
+          "alt_text": "Illustration of a Sahiwal bull, side view",
+          "is_primary": true,
+          "sort_order": 0
+        },
+        {
+          "file": "sahiwal-bull-machakos-2.webp",
+          "alt_text": "Illustration of a Sahiwal bull in the paddock",
+          "is_primary": false,
+          "sort_order": 1
+        },
+        {
+          "file": "sahiwal-bull-machakos-3.webp",
+          "alt_text": "Illustration of a Sahiwal bull, head and shoulders",
+          "is_primary": false,
+          "sort_order": 2
+        }
+      ]
+    },
+    {
+      "slug": "friesian-calf-bomet",
+      "title": "Friesian heifer calf",
+      "breed": "Friesian",
+      "category": "calves",
+      "sex": "female",
+      "age_months": 4,
+      "weight_kg": 95,
+      "location": "Bomet",
+      "price_kes": 38000,
+      "status": "available",
+      "published_at": "2026-10-15T09:30:00Z",
+      "description": "Weaned heifer calf on calf pellets and hay. A good start for a small dairy unit. Ask the seller about feeding and deworming history.",
+      "images": [
+        {
+          "file": "friesian-calf-bomet-1.webp",
+          "alt_text": "Illustration of a Friesian heifer calf, side view",
+          "is_primary": true,
+          "sort_order": 0
+        },
+        {
+          "file": "friesian-calf-bomet-2.webp",
+          "alt_text": "Illustration of a Friesian heifer calf in the paddock",
+          "is_primary": false,
+          "sort_order": 1
+        },
+        {
+          "file": "friesian-calf-bomet-3.webp",
+          "alt_text": "Illustration of a Friesian heifer calf, head and shoulders",
+          "is_primary": false,
+          "sort_order": 2
+        }
+      ]
+    },
+    {
+      "slug": "ayrshire-calf-kericho",
+      "title": "Ayrshire bull calf",
+      "breed": "Ayrshire",
+      "category": "calves",
+      "sex": "male",
+      "age_months": 3,
+      "weight_kg": null,
+      "location": "Kericho",
+      "price_kes": 24000,
+      "status": "sold",
+      "published_at": "2026-09-28T10:00:00Z",
+      "description": "Ayrshire bull calf. This listing has been sold and is shown for reference only.",
+      "images": [
+        {
+          "file": "ayrshire-calf-kericho-1.webp",
+          "alt_text": "Illustration of an Ayrshire bull calf, side view",
+          "is_primary": true,
+          "sort_order": 0
+        },
+        {
+          "file": "ayrshire-calf-kericho-2.webp",
+          "alt_text": "Illustration of an Ayrshire bull calf in the paddock",
+          "is_primary": false,
+          "sort_order": 1
+        },
+        {
+          "file": "ayrshire-calf-kericho-3.webp",
+          "alt_text": "Illustration of an Ayrshire bull calf, head and shoulders",
+          "is_primary": false,
+          "sort_order": 2
+        }
+      ]
+    },
+    {
+      "slug": "ankole-cow-migori",
+      "title": "Ankole cow",
+      "breed": "Ankole",
+      "category": "beef",
+      "sex": "female",
+      "age_months": 60,
+      "weight_kg": null,
+      "location": "Migori",
+      "price_kes": 90000,
+      "status": "available",
+      "published_at": "2026-10-03T13:40:00Z",
+      "description": "Long-horned Ankole cow from a grazing herd. Hardy and used to walking long distances. Transport needs planning because of the horn span.",
+      "images": [
+        {
+          "file": "ankole-cow-migori-1.webp",
+          "alt_text": "Illustration of an Ankole cow, side view",
+          "is_primary": true,
+          "sort_order": 0
+        },
+        {
+          "file": "ankole-cow-migori-2.webp",
+          "alt_text": "Illustration of an Ankole cow in the paddock",
+          "is_primary": false,
+          "sort_order": 1
+        },
+        {
+          "file": "ankole-cow-migori-3.webp",
+          "alt_text": "Illustration of an Ankole cow, head and shoulders",
+          "is_primary": false,
+          "sort_order": 2
+        }
+      ]
+    },
+    {
+      "slug": "simmental-steer-meru",
+      "title": "Simmental-cross steer",
+      "breed": "Simmental cross",
+      "category": "beef",
+      "sex": "male",
+      "age_months": 24,
+      "weight_kg": 400,
+      "location": "Meru",
+      "price_kes": 128000,
+      "status": "available",
+      "published_at": "2026-10-08T15:00:00Z",
+      "description": "Fast-growing Simmental-cross steer on a silage and pasture ration. Weighed by the seller last month; confirm weight at viewing.",
+      "images": [
+        {
+          "file": "simmental-steer-meru-1.webp",
+          "alt_text": "Illustration of a Simmental-cross steer, side view",
+          "is_primary": true,
+          "sort_order": 0
+        },
+        {
+          "file": "simmental-steer-meru-2.webp",
+          "alt_text": "Illustration of a Simmental-cross steer in the paddock",
+          "is_primary": false,
+          "sort_order": 1
+        },
+        {
+          "file": "simmental-steer-meru-3.webp",
+          "alt_text": "Illustration of a Simmental-cross steer, head and shoulders",
+          "is_primary": false,
+          "sort_order": 2
+        }
+      ]
+    },
+    {
+      "slug": "jersey-cross-calf-githunguri",
+      "title": "Jersey-Friesian cross heifer calf",
+      "breed": "Jersey-Friesian cross",
+      "category": "calves",
+      "sex": "female",
+      "age_months": 6,
+      "weight_kg": null,
+      "location": "Githunguri, Kiambu",
+      "price_kes": 45000,
+      "status": "available",
+      "published_at": "2026-10-13T08:20:00Z",
+      "description": "Cross-bred heifer calf, weaned and growing well on forage. Suited to farmers who want a moderate-sized dairy animal.",
+      "images": [
+        {
+          "file": "jersey-cross-calf-githunguri-1.webp",
+          "alt_text": "Illustration of a Jersey-Friesian cross heifer calf, side view",
+          "is_primary": true,
+          "sort_order": 0
+        },
+        {
+          "file": "jersey-cross-calf-githunguri-2.webp",
+          "alt_text": "Illustration of a Jersey-Friesian cross heifer calf in the paddock",
+          "is_primary": false,
+          "sort_order": 1
+        },
+        {
+          "file": "jersey-cross-calf-githunguri-3.webp",
+          "alt_text": "Illustration of a Jersey-Friesian cross heifer calf, head and shoulders",
+          "is_primary": false,
+          "sort_order": 2
+        }
+      ]
+    }
+  ]
+}

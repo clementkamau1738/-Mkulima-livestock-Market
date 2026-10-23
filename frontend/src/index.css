@@ -1,0 +1,76 @@
+@import '@fontsource-variable/fraunces';
+@import '@fontsource-variable/fraunces/wght-italic.css';
+@import '@fontsource-variable/manrope';
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Fraunces Variable', ui-serif, Georgia, serif;
+
+  /* Brand */
+  --color-forest: #153d2c;
+  --color-forest-700: #1f5540;
+  --color-forest-950: #0d2619;
+  --color-lime: #d9f36a;
+  --color-lime-300: #e6f89b;
+  --color-cream: #f7f3e9;
+  --color-cream-200: #ece5d3;
+  --color-white: #ffffff;
+
+  /* Text and lines: ink-muted keeps >= 4.5:1 on cream and white */
+  --color-ink: #18211c;
+  --color-ink-muted: #4c5850;
+  --color-line: #e2dac6;
+
+  /* Status */
+  --color-success: #1b6b3f;
+  --color-success-soft: #dcefdf;
+  --color-warning: #8a5a00;
+  --color-warning-soft: #fbedc8;
+  --color-danger: #a8321f;
+  --color-danger-soft: #f8ddd6;
+  --color-info: #1d5b80;
+  --color-info-soft: #dbeaf3;
+
+  --shadow-card: 0 1px 2px rgb(21 61 44 / 0.04), 0 8px 24px -12px rgb(21 61 44 / 0.18);
+}
+
+@utility container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 80rem;
+  padding-inline: 1rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 2rem;
+  }
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
