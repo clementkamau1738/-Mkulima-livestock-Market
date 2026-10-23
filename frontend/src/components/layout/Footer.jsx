@@ -60,7 +60,12 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="container-page flex flex-col gap-2 py-6 text-xs text-cream/60 sm:flex-row sm:justify-between">
           <p>&copy; {YEAR} {site.name}. Preview build with fictional sample listings.</p>
-          <p>Illustrations are original sample artwork, not photographs of listed animals.</p>
+          <p>
+            Sample photos show similar animals, not the ones listed.{' '}
+            <Link to="/photo-credits" className="underline underline-offset-2 hover:text-white">
+              Photo credits
+            </Link>
+          </p>
         </div>
       </div>
     </footer>

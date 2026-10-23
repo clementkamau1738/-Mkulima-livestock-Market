@@ -1,6 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { renderRoute } from './renderRoute'
+import credits from '../content/photoCredits.json'
 
 const PAGES = [
   ['/', /find the right animal for your farm/i],
@@ -55,5 +56,17 @@ describe('routing', () => {
     await user.click(screen.getByRole('button', { name: 'Search' }))
     expect(router.state.location.pathname).toBe('/marketplace')
     expect(router.state.location.search).toBe('?q=Boran')
+  })
+})
+
+describe('Photo credits', () => {
+  it('credits every bundled photo with author, licence and source', async () => {
+    renderRoute('/photo-credits')
+    expect(await screen.findByRole('heading', { level: 1, name: 'Photo credits' })).toBeInTheDocument()
+    const sources = screen.getAllByRole('link', { name: 'Original on Wikimedia Commons' })
+    expect(sources.length).toBe(credits.length)
+    sources.forEach((link) => expect(link.getAttribute('href')).toMatch(/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/))
+    expect(screen.getAllByText(/^Photo by /)).toHaveLength(credits.length)
+    expect(screen.getByText('Homepage hero')).toBeInTheDocument()
   })
 })

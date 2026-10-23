@@ -3,9 +3,9 @@
 // Optional fields (ageMonths, weightKg) are omitted on purpose for some listings.
 
 const images = (name, label) => [
-  { src: `/images/livestock/${name}-1.svg`, alt: `Illustration of ${label}, side view`, isPrimary: true },
-  { src: `/images/livestock/${name}-2.svg`, alt: `Illustration of ${label} in the paddock`, isPrimary: false },
-  { src: `/images/livestock/${name}-3.svg`, alt: `Illustration of ${label}, head and shoulders`, isPrimary: false },
+  { src: `/media/livestock/${name}-1.webp`, alt: `Photo of ${label}, side view`, isPrimary: true },
+  { src: `/media/livestock/${name}-2.webp`, alt: `Photo of ${label} in the paddock`, isPrimary: false },
+  { src: `/media/livestock/${name}-3.webp`, alt: `Photo of ${label}, head and shoulders`, isPrimary: false },
 ]
 
 export const mockLivestock = [

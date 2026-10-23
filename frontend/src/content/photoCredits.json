@@ -1,0 +1,407 @@
+[
+  {
+    "file": "hero-herd.webp",
+    "preview": "/images/photo-credits/hero-herd.webp",
+    "usedFor": "Homepage hero",
+    "author": "Willem van Aken, CSIRO",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:CSIRO_ScienceImage_4421_Tribesman_guarding_cattle_in_Kenya_Africa_1981.jpg"
+  },
+  {
+    "file": "category-dairy.webp",
+    "preview": "/images/photo-credits/category-dairy.webp",
+    "usedFor": "Homepage category: Dairy",
+    "author": "Jameswasswa",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Hope_we_shall_go_through_this_situation.jpg"
+  },
+  {
+    "file": "category-beef.webp",
+    "preview": "/images/photo-credits/category-beef.webp",
+    "usedFor": "Homepage category: Beef",
+    "author": "Leo Li from Hong Kong",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Cattle_@_Chyulu_Hills_(20513653483).jpg"
+  },
+  {
+    "file": "category-bulls.webp",
+    "preview": "/images/photo-credits/category-bulls.webp",
+    "usedFor": "Homepage category: Bulls",
+    "author": "Laika ac from USA",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Laika_ac_Cattle_(9727553992).jpg"
+  },
+  {
+    "file": "category-calves.webp",
+    "preview": "/images/photo-credits/category-calves.webp",
+    "usedFor": "Homepage category: Calves",
+    "author": "egrego2",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Jersey_calf.jpg"
+  },
+  {
+    "file": "friesian-heifer-njoro-1.webp",
+    "preview": "/images/photo-credits/friesian-heifer-njoro-1.webp",
+    "usedFor": "Sample listing: In-calf Friesian heifer (photo 1)",
+    "author": "Verum",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:HF_in_der_Rh%C3%B6n_auf_der_Weide.jpg"
+  },
+  {
+    "file": "friesian-heifer-njoro-2.webp",
+    "preview": "/images/photo-credits/friesian-heifer-njoro-2.webp",
+    "usedFor": "Sample listing: In-calf Friesian heifer (photo 2)",
+    "author": "Baykedevries",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Een_zwart_bonte_koe.jpg"
+  },
+  {
+    "file": "friesian-heifer-njoro-3.webp",
+    "preview": "/images/photo-credits/friesian-heifer-njoro-3.webp",
+    "usedFor": "Sample listing: In-calf Friesian heifer (photo 3)",
+    "author": "Verum",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:HF_in_der_Rh%C3%B6n_auf_der_Weide_(02).jpg"
+  },
+  {
+    "file": "ayrshire-cow-othaya-1.webp",
+    "preview": "/images/photo-credits/ayrshire-cow-othaya-1.webp",
+    "usedFor": "Sample listing: Ayrshire cow, second lactation (photo 1)",
+    "author": "böhringer friedrich",
+    "license": "CC BY-SA 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+    "source": "https://commons.wikimedia.org/wiki/File:AyrshireCattle1.JPG"
+  },
+  {
+    "file": "ayrshire-cow-othaya-2.webp",
+    "preview": "/images/photo-credits/ayrshire-cow-othaya-2.webp",
+    "usedFor": "Sample listing: Ayrshire cow, second lactation (photo 2)",
+    "author": "Mutney",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Ayrshire_cattle_at_Camborne_Show,_Cornwall_-_July_2026_(1).jpg"
+  },
+  {
+    "file": "ayrshire-cow-othaya-3.webp",
+    "preview": "/images/photo-credits/ayrshire-cow-othaya-3.webp",
+    "usedFor": "Sample listing: Ayrshire cow, second lactation (photo 3)",
+    "author": "Sergei S. Scurfield",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Ayrshire_cattle.JPG"
+  },
+  {
+    "file": "jersey-heifer-limuru-1.webp",
+    "preview": "/images/photo-credits/jersey-heifer-limuru-1.webp",
+    "usedFor": "Sample listing: Jersey heifer, ready for service (photo 1)",
+    "author": "Unukorno",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Jersey_Cow_2015.jpg"
+  },
+  {
+    "file": "jersey-heifer-limuru-2.webp",
+    "preview": "/images/photo-credits/jersey-heifer-limuru-2.webp",
+    "usedFor": "Sample listing: Jersey heifer, ready for service (photo 2)",
+    "author": "Man vyi",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File:Bou%C3%ABts_d%27J%C3%A8rri_%C3%8Agypte_5_J%C3%A8rri_Mai_2009.jpg"
+  },
+  {
+    "file": "jersey-heifer-limuru-3.webp",
+    "preview": "/images/photo-credits/jersey-heifer-limuru-3.webp",
+    "usedFor": "Sample listing: Jersey heifer, ready for service (photo 3)",
+    "author": "ITookSomePhotos",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Friendly_Jersey_cow,_near_Brighstone,_Isle_of_Wight,_England.jpg"
+  },
+  {
+    "file": "guernsey-cow-olkalou-1.webp",
+    "preview": "/images/photo-credits/guernsey-cow-olkalou-1.webp",
+    "usedFor": "Sample listing: Guernsey dairy cow (photo 1)",
+    "author": "Man vyi",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File:Guernsey_July_2011_212.jpg"
+  },
+  {
+    "file": "guernsey-cow-olkalou-2.webp",
+    "preview": "/images/photo-credits/guernsey-cow-olkalou-2.webp",
+    "usedFor": "Sample listing: Guernsey dairy cow (photo 2)",
+    "author": "Miyuki Meinaka",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Guernsey_cattle_in_Minamigaoka_Dairy_01.jpg"
+  },
+  {
+    "file": "guernsey-cow-olkalou-3.webp",
+    "preview": "/images/photo-credits/guernsey-cow-olkalou-3.webp",
+    "usedFor": "Sample listing: Guernsey dairy cow (photo 3)",
+    "author": "boliyou",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Guernsey_Dairy_Cow.jpg"
+  },
+  {
+    "file": "boran-steer-nanyuki-1.webp",
+    "preview": "/images/photo-credits/boran-steer-nanyuki-1.webp",
+    "usedFor": "Sample listing: Boran steer for finishing (photo 1)",
+    "author": "DavyKirii",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Kenya_cows.jpg"
+  },
+  {
+    "file": "boran-steer-nanyuki-2.webp",
+    "preview": "/images/photo-credits/boran-steer-nanyuki-2.webp",
+    "usedFor": "Sample listing: Boran steer for finishing (photo 2)",
+    "author": "Regina Hart from Industry, United States",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Maasai_cattle_(37484134252).jpg"
+  },
+  {
+    "file": "boran-steer-nanyuki-3.webp",
+    "preview": "/images/photo-credits/boran-steer-nanyuki-3.webp",
+    "usedFor": "Sample listing: Boran steer for finishing (photo 3)",
+    "author": "Tish Madesh",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Sahiwal_Cattle_in_Kenya.jpg"
+  },
+  {
+    "file": "sahiwal-steer-kajiado-1.webp",
+    "preview": "/images/photo-credits/sahiwal-steer-kajiado-1.webp",
+    "usedFor": "Sample listing: Sahiwal-cross steer (photo 1)",
+    "author": "Tish Madesh",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Sahiwal_Cattle.jpg"
+  },
+  {
+    "file": "sahiwal-steer-kajiado-2.webp",
+    "preview": "/images/photo-credits/sahiwal-steer-kajiado-2.webp",
+    "usedFor": "Sample listing: Sahiwal-cross steer (photo 2)",
+    "author": "Harvinder Chandigarh",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Sahiwal-_breed_cow_at_the_dairy_unit_attached_to_Bhai_Ram_Singh_Memorial_(Gurudwara)_,_Bhaini_Sahib_,Ludhyana,_Punjab_,India.JPG"
+  },
+  {
+    "file": "sahiwal-steer-kajiado-3.webp",
+    "preview": "/images/photo-credits/sahiwal-steer-kajiado-3.webp",
+    "usedFor": "Sample listing: Sahiwal-cross steer (photo 3)",
+    "author": "Tish Madesh",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Sahiwal_cows.jpg"
+  },
+  {
+    "file": "boran-bull-narok-1.webp",
+    "preview": "/images/photo-credits/boran-bull-narok-1.webp",
+    "usedFor": "Sample listing: Boran breeding bull (photo 1)",
+    "author": "Ngangaesther",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Boran_bull_at_kasarani.jpg"
+  },
+  {
+    "file": "boran-bull-narok-2.webp",
+    "preview": "/images/photo-credits/boran-bull-narok-2.webp",
+    "usedFor": "Sample listing: Boran breeding bull (photo 2)",
+    "author": "Kasomo chaila",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Iziya_Farm_Mbala_Northern_Province_(since_1983)_-_Zambia.JPG"
+  },
+  {
+    "file": "friesian-bull-eldoret-1.webp",
+    "preview": "/images/photo-credits/friesian-bull-eldoret-1.webp",
+    "usedFor": "Sample listing: Friesian bull (photo 1)",
+    "author": "Homoatrox",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Holstein_cattle_(Belagro-2021)_1.jpg"
+  },
+  {
+    "file": "friesian-bull-eldoret-2.webp",
+    "preview": "/images/photo-credits/friesian-bull-eldoret-2.webp",
+    "usedFor": "Sample listing: Friesian bull (photo 2)",
+    "author": "Homoatrox",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Holstein_cattle_(Belagro-2021)_2.jpg"
+  },
+  {
+    "file": "sahiwal-bull-machakos-1.webp",
+    "preview": "/images/photo-credits/sahiwal-bull-machakos-1.webp",
+    "usedFor": "Sample listing: Sahiwal bull (photo 1)",
+    "author": "Pavanaja",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Sahiwala_01.JPG"
+  },
+  {
+    "file": "sahiwal-bull-machakos-2.webp",
+    "preview": "/images/photo-credits/sahiwal-bull-machakos-2.webp",
+    "usedFor": "Sample listing: Sahiwal bull (photo 2)",
+    "author": "Pavanaja",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Sahiwala_02.JPG"
+  },
+  {
+    "file": "sahiwal-bull-machakos-3.webp",
+    "preview": "/images/photo-credits/sahiwal-bull-machakos-3.webp",
+    "usedFor": "Sample listing: Sahiwal bull (photo 3)",
+    "author": "Tish Madesh",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Sahiwal_breed.jpg"
+  },
+  {
+    "file": "friesian-calf-bomet-1.webp",
+    "preview": "/images/photo-credits/friesian-calf-bomet-1.webp",
+    "usedFor": "Sample listing: Friesian heifer calf (photo 1)",
+    "author": "Jiel",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Jielbeaumadier_veau_madrid_2014.jpeg"
+  },
+  {
+    "file": "friesian-calf-bomet-2.webp",
+    "preview": "/images/photo-credits/friesian-calf-bomet-2.webp",
+    "usedFor": "Sample listing: Friesian heifer calf (photo 2)",
+    "author": "Lameiro",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Mercado_de_Gando_de_Amio_(Santiago),_Becerros_pintos_%C3%A1_venda.jpg"
+  },
+  {
+    "file": "friesian-calf-bomet-3.webp",
+    "preview": "/images/photo-credits/friesian-calf-bomet-3.webp",
+    "usedFor": "Sample listing: Friesian heifer calf (photo 3)",
+    "author": "Roee Shpernik",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Calf_in_a_small_cage_01.jpg"
+  },
+  {
+    "file": "ayrshire-calf-kericho-1.webp",
+    "preview": "/images/photo-credits/ayrshire-calf-kericho-1.webp",
+    "usedFor": "Sample listing: Ayrshire bull calf (photo 1)",
+    "author": "gailhampshire",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Young_Ayrshire_cow_(52181577014).jpg"
+  },
+  {
+    "file": "ayrshire-calf-kericho-2.webp",
+    "preview": "/images/photo-credits/ayrshire-calf-kericho-2.webp",
+    "usedFor": "Sample listing: Ayrshire bull calf (photo 2)",
+    "author": "Tsaag Valren",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Veaux_red_holstein_(2).JPG"
+  },
+  {
+    "file": "ayrshire-calf-kericho-3.webp",
+    "preview": "/images/photo-credits/ayrshire-calf-kericho-3.webp",
+    "usedFor": "Sample listing: Ayrshire bull calf (photo 3)",
+    "author": "Uberprutser",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Fries_rood-bond_kalf_en_moeder_2.jpg"
+  },
+  {
+    "file": "ankole-cow-migori-1.webp",
+    "preview": "/images/photo-credits/ankole-cow-migori-1.webp",
+    "usedFor": "Sample listing: Ankole cow (photo 1)",
+    "author": "sarahemcc",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Ankole_Cattle.jpg"
+  },
+  {
+    "file": "ankole-cow-migori-2.webp",
+    "preview": "/images/photo-credits/ankole-cow-migori-2.webp",
+    "usedFor": "Sample listing: Ankole cow (photo 2)",
+    "author": "Antoinetorrens",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Vache_de_Nyagatare_4.JPG"
+  },
+  {
+    "file": "ankole-cow-migori-3.webp",
+    "preview": "/images/photo-credits/ankole-cow-migori-3.webp",
+    "usedFor": "Sample listing: Ankole cow (photo 3)",
+    "author": "Antoinetorrens",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Taureaux_et_vaches_%C3%A0_Nyagatare.JPG"
+  },
+  {
+    "file": "simmental-steer-meru-1.webp",
+    "preview": "/images/photo-credits/simmental-steer-meru-1.webp",
+    "usedFor": "Sample listing: Simmental-cross steer (photo 1)",
+    "author": "José Reynaldo da Fonseca",
+    "license": "CC BY 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
+    "source": "https://commons.wikimedia.org/wiki/File:44%C2%BA_EMAPA_(simental)-_140309_REFON_2.JPG"
+  },
+  {
+    "file": "simmental-steer-meru-2.webp",
+    "preview": "/images/photo-credits/simmental-steer-meru-2.webp",
+    "usedFor": "Sample listing: Simmental-cross steer (photo 2)",
+    "author": "José Reynaldo da Fonseca",
+    "license": "CC BY 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
+    "source": "https://commons.wikimedia.org/wiki/File:44%C2%BA_EMAPA_(simental)-_140309_REFON_3.JPG"
+  },
+  {
+    "file": "simmental-steer-meru-3.webp",
+    "preview": "/images/photo-credits/simmental-steer-meru-3.webp",
+    "usedFor": "Sample listing: Simmental-cross steer (photo 3)",
+    "author": "José Reynaldo da Fonseca",
+    "license": "CC BY 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
+    "source": "https://commons.wikimedia.org/wiki/File:44%C2%BA_EMAPA_(simental)-_140309_REFON_1.JPG"
+  },
+  {
+    "file": "jersey-cross-calf-githunguri-1.webp",
+    "preview": "/images/photo-credits/jersey-cross-calf-githunguri-1.webp",
+    "usedFor": "Sample listing: Jersey-Friesian cross heifer calf (photo 1)",
+    "author": "Zeynel Cebeci",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Jersey_crossbred_calf_01-3.jpg"
+  },
+  {
+    "file": "jersey-cross-calf-githunguri-2.webp",
+    "preview": "/images/photo-credits/jersey-cross-calf-githunguri-2.webp",
+    "usedFor": "Sample listing: Jersey-Friesian cross heifer calf (photo 2)",
+    "author": "Ganesh Mohan T",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Jersey_calf_from_Kerala_02.jpg"
+  },
+  {
+    "file": "jersey-cross-calf-githunguri-3.webp",
+    "preview": "/images/photo-credits/jersey-cross-calf-githunguri-3.webp",
+    "usedFor": "Sample listing: Jersey-Friesian cross heifer calf (photo 3)",
+    "author": "Ganesh Mohan T",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Jersey_calf_from_Kerala_01.jpg"
+  }
+]

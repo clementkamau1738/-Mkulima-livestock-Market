@@ -12,7 +12,7 @@ A responsive livestock marketplace for customers in Kenya. Visitors browse dairy
 | 4 | Authentication, customer dashboard, admin workflows | Done |
 | 5 | Testing, hardening, Docker, deployment | Done |
 
-**Current limits:** the marketplace shows the 14 seeded fictional listings with original illustrations, not photos (pages say so while `SHOW_SAMPLE_DATA_NOTICE` in `frontend/src/config/site.js` is on). Customers can register, sign in, send inquiries (also possible as a guest), submit deposit and withdrawal requests, and follow them on their dashboard. Staff review everything in the admin area at `/admin` in the React app. No real payment provider is connected: staff confirm payments and payouts by checking the official statements themselves, and the system records what they confirm. Payment details, contact details and legal text are placeholders.
+**Current limits:** the marketplace shows the 14 seeded fictional listings, illustrated with openly licensed photos of similar animals (pages say so while `SHOW_SAMPLE_DATA_NOTICE` in `frontend/src/config/site.js` is on). Customers can register, sign in, send inquiries (also possible as a guest), submit deposit and withdrawal requests, and follow them on their dashboard. Staff review everything in the admin area at `/admin` in the React app. No real payment provider is connected: staff confirm payments and payouts by checking the official statements themselves, and the system records what they confirm. Payment details, contact details and legal text are placeholders.
 
 ## Architecture
 
@@ -124,7 +124,6 @@ The frontend has no offline mode. With the backend stopped, pages show their "co
 | `npm run lint` | oxlint; warnings fail the run |
 | `npm test` | Run the test suite once (uses the in-memory fake API; no backend needed) |
 | `npm run test:watch` | Tests in watch mode |
-| `npm run generate:images` | Regenerate the site illustrations (`public/images/site`) and the listing source art (`scripts/sample-art`) |
 
 ## Getting started (backend)
 
@@ -146,7 +145,7 @@ python3 -m venv .venv
 | --- | --- |
 | `.venv/bin/python manage.py test` | Run the backend tests (needs the db container; creates a throwaway `test_<db>` database) |
 | `.venv/bin/python manage.py makemigrations --check --dry-run` | Fail if models and migrations have drifted |
-| `.venv/bin/python manage.py seed_sample_data` | Create sample categories, 14 listings and 42 images. It matches by slug, so it never duplicates or overwrites admin edits. |
+| `.venv/bin/python manage.py seed_sample_data` | Create sample categories, 14 listings and their photos. It matches by slug, so it never duplicates or overwrites admin edits. Add `--replace-images` to swap the sample listings' current images for the bundled photos. |
 | `.venv/bin/python manage.py check --deploy` | Django's production checklist (run with production environment values) |
 | `docker compose up -d --build` (repo root) | The whole production-style stack on http://127.0.0.1:8080 (see below) |
 
@@ -379,18 +378,25 @@ Rules the settings enforce:
 - **All visitors share one rate limit.** `STACK_NUM_PROXIES` (Docker) or `DJANGO_NUM_PROXIES` is lower than the number of proxies in front of Django, so Django sees the proxy's address as the client.
 - **Images blocked in the browser after switching to S3.** Add the media origin to `CSP_IMG_SRC` and recreate the `web` container.
 - **`docker compose ps` shows `migrate` as `Exited (0)`.** That is expected: it runs once per start.
-- **Sample images.** The 42 WebP files in `backend/livestock/sample_data/images` were rendered once (1200x900) from the SVG source art in `frontend/scripts/sample-art/livestock`. They are original artwork, not photos.
 - **403 `csrf_failed`.** The `csrftoken` cookie is missing or stale. Load any page first (the app calls `/api/auth/session/`, which sets it). When calling the API from scripts, GET that endpoint, then send the cookie value in `X-CSRFToken`.
 - **Deposits or withdrawals return 403 `not_authenticated`.** These need a signed-in customer since Phase 4. Inquiries still work as a guest.
 - **Staff cannot open `/admin` in the React app.** Check the user's role is `staff` or `admin` and the account is active (Django Admin > Users).
 - **429 on sign-in after a few attempts.** Sign-in is limited per IP and per email (`THROTTLE_LOGIN`, `THROTTLE_LOGIN_ACCOUNT`). Counters live in the cache and reset when the server restarts in development.
+
+## Photos and licensing
+
+All bundled photos are real photographs from Wikimedia Commons, used under their licences (CC0, public domain, CC BY or CC BY-SA). Each one credits its author and licence in three places: the listing gallery caption, the Photo credits page (`/photo-credits`, linked from the footer), and `backend/livestock/sample_data/CREDITS.md`. They were cropped to 4:3, resized and re-encoded as WebP, which also removes camera metadata such as GPS location.
+
+The sample listings are fictional, so their photos show similar animals, not the animals described. The listing pages, the marketplace notice and the footer say so. Commons has very few photos of Boran cattle: the Boran bull listing uses a photo of a Boran bull taken in Kenya, and the Boran steer listing uses photos of East African zebu cattle in Kenya, with alt text describing what each photo shows.
+
+When real sellers publish listings, they upload photos of the actual animal, and they must have the right to use them. The design follows the style of real-photo livestock marketplaces such as Flockr; no images, text or code were taken from them.
 
 ## Remaining limitations
 
 - **No payment provider integration.** M-Pesa (Daraja) and bank APIs are not connected. Staff confirm deposits and payouts by checking official statements manually, and the system records what they confirm. The integration needs real credentials and belongs in its own module, kept separate from the request and transaction logic.
 - **No wallet or stored balance,** by design. Withdrawal approval relies on staff checking what the customer is owed. A wallet would need a ledger, row locking, balance constraints and idempotent callbacks before it could be added.
 - **Real business details are still placeholders:** payment instructions, contact details, and the terms and privacy text (which need legal review).
-- **Sample data:** the 14 listings and their illustrations are fictional. End-to-end test records from Phases 3 to 5 (accounts and requests labelled "E2E" or "Race", listing "E2E Sahiwal heifer") are in the development database only.
+- **Sample data:** the 14 listings are fictional and their photos show similar animals. End-to-end test records from Phases 3 to 5 (accounts and requests labelled "E2E" or "Race", listing "E2E Sahiwal heifer") are in the development database only.
 - **Not yet built:** password reset by email, email or SMS notifications, customer profile editing, and customers cancelling their own inquiries. There is no outgoing email configuration at all.
 - **Operations not included:** monitoring and alerting, automated off-server backups, log shipping and malware scanning of uploads. Images are verified by decoding them and their file names are discarded.
 - **Rate limits** count retries of the same submission, so a customer on a very unstable connection could reach the 10-per-hour limit on money requests sooner than expected.

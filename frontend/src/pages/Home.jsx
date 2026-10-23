@@ -133,8 +133,8 @@ export default function Home() {
           </div>
           <div className="relative">
             <img
-              src="/images/site/hero-herd.svg"
-              alt="Illustration of cattle grazing on a Kenyan farm at sunset"
+              src="/images/site/hero-herd.webp"
+              alt="Herder with zebu cattle grazing in dry bushland in Kenya"
               className="aspect-[4/3] w-full rounded-[2rem] object-cover shadow-2xl ring-1 ring-white/10"
             />
             <div className="absolute -bottom-6 left-4 flex max-w-xs items-start gap-3 rounded-2xl bg-white p-4 text-ink shadow-xl sm:-left-6">

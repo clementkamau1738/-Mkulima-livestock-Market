@@ -126,7 +126,7 @@ class SeedCommandTests(APITestCase):
     def test_seed_is_idempotent(self):
         call_command("seed_sample_data", stdout=StringIO())
         counts = (Category.objects.count(), LivestockListing.objects.count(), LivestockImage.objects.count())
-        self.assertEqual(counts, (4, 14, 42))
+        self.assertEqual(counts, (4, 14, 40))
 
         listing = LivestockListing.objects.get(slug="boran-bull-narok")
         listing.price_kes = Decimal("250000")
@@ -147,6 +147,26 @@ class SeedCommandTests(APITestCase):
         self.assertIsNone(sahiwal.age_months)
         self.assertEqual(LivestockListing.objects.filter(status="sold").count(), 1)
         self.assertEqual(LivestockImage.objects.filter(is_primary=True).count(), 14)
+
+    def test_every_sample_photo_is_credited(self):
+        call_command("seed_sample_data", stdout=StringIO())
+        for image in LivestockImage.objects.all():
+            self.assertTrue(image.alt_text, image)
+            self.assertRegex(image.caption, r"^Sample photo of a similar animal\. Photo: .+, (CC0|CC BY|Public domain|PD).*via Wikimedia Commons\.$")
+
+    def test_replace_images_swaps_existing_files(self):
+        call_command("seed_sample_data", stdout=StringIO())
+        listing = LivestockListing.objects.get(slug="ankole-cow-migori")
+        old = list(listing.images.values_list("image", flat=True))
+        storage = LivestockImage._meta.get_field("image").storage
+        with self.captureOnCommitCallbacks(execute=True):
+            out = StringIO()
+            call_command("seed_sample_data", "--replace-images", stdout=out)
+        self.assertIn("40 images", out.getvalue())
+        self.assertEqual(LivestockImage.objects.count(), 40)
+        new = set(listing.images.values_list("image", flat=True))
+        self.assertFalse(new & set(old))
+        self.assertTrue(all(not storage.exists(name) for name in old), "old files deleted after commit")
 
 
 class StatusFilterTests(APITestCase):

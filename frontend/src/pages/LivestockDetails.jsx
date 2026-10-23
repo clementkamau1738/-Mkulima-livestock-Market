@@ -188,7 +188,7 @@ export default function LivestockDetails() {
         </h2>
         <p className="mt-4 leading-relaxed whitespace-pre-line text-ink-muted">{listing.description}</p>
         {SHOW_SAMPLE_DATA_NOTICE && (
-          <SampleNotice className="mt-6">This is a fictional sample listing. The animal, seller and images are not real.</SampleNotice>
+          <SampleNotice className="mt-6">This is a fictional sample listing. The animal and seller are not real, and the photos show similar animals, not this one.</SampleNotice>
         )}
       </section>
 

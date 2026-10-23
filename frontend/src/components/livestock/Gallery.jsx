@@ -7,9 +7,12 @@ export default function Gallery({ images }) {
 
   return (
     <div>
-      <div className="overflow-hidden rounded-3xl border border-line/80 bg-cream-200">
-        <img src={current.src} alt={current.alt} className="aspect-[4/3] w-full object-cover" />
-      </div>
+      <figure>
+        <div className="overflow-hidden rounded-3xl border border-line/80 bg-cream-200">
+          <img src={current.src} alt={current.alt} className="aspect-[4/3] w-full object-cover" />
+        </div>
+        {current.caption && <figcaption className="mt-2 text-xs text-ink-muted">{current.caption}</figcaption>}
+      </figure>
       {images.length > 1 && (
         <ul className="mt-3 grid grid-cols-4 gap-3" aria-label="Choose image">
           {images.map((image, index) => (

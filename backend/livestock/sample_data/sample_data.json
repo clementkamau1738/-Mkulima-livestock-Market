@@ -42,21 +42,24 @@
       "images": [
         {
           "file": "friesian-heifer-njoro-1.webp",
-          "alt_text": "Illustration of a Friesian heifer, side view",
-          "is_primary": true,
-          "sort_order": 0
+          "alt_text": "Black-and-white Friesian (Holstein) heifer standing on grass, side view",
+          "caption": "Sample photo of a similar animal. Photo: Verum, CC BY-SA 3.0, via Wikimedia Commons.",
+          "sort_order": 0,
+          "is_primary": true
         },
         {
           "file": "friesian-heifer-njoro-2.webp",
-          "alt_text": "Illustration of a Friesian heifer in the paddock",
-          "is_primary": false,
-          "sort_order": 1
+          "alt_text": "Black-and-white Friesian (Holstein) cow facing the camera in a pasture",
+          "caption": "Sample photo of a similar animal. Photo: Baykedevries, CC BY-SA 3.0, via Wikimedia Commons.",
+          "sort_order": 1,
+          "is_primary": false
         },
         {
           "file": "friesian-heifer-njoro-3.webp",
-          "alt_text": "Illustration of a Friesian heifer, head and shoulders",
-          "is_primary": false,
-          "sort_order": 2
+          "alt_text": "Two Friesian (Holstein) cattle grazing on green pasture",
+          "caption": "Sample photo of a similar animal. Photo: Verum, CC BY-SA 3.0, via Wikimedia Commons.",
+          "sort_order": 2,
+          "is_primary": false
         }
       ]
     },
@@ -76,21 +79,24 @@
       "images": [
         {
           "file": "ayrshire-cow-othaya-1.webp",
-          "alt_text": "Illustration of an Ayrshire cow, side view",
-          "is_primary": true,
-          "sort_order": 0
+          "alt_text": "Red-and-white Ayrshire cow standing on a grassy hillside",
+          "caption": "Sample photo of a similar animal. Photo: böhringer friedrich, CC BY-SA 2.5, via Wikimedia Commons.",
+          "sort_order": 0,
+          "is_primary": true
         },
         {
           "file": "ayrshire-cow-othaya-2.webp",
-          "alt_text": "Illustration of an Ayrshire cow in the paddock",
-          "is_primary": false,
-          "sort_order": 1
+          "alt_text": "Red-and-white Ayrshire cows tethered at an agricultural show",
+          "caption": "Sample photo of a similar animal. Photo: Mutney, CC BY 4.0, via Wikimedia Commons.",
+          "sort_order": 1,
+          "is_primary": false
         },
         {
           "file": "ayrshire-cow-othaya-3.webp",
-          "alt_text": "Illustration of an Ayrshire cow, head and shoulders",
-          "is_primary": false,
-          "sort_order": 2
+          "alt_text": "Close view of a red-and-white Ayrshire cow's head and neck",
+          "caption": "Sample photo of a similar animal. Photo: Sergei S. Scurfield, CC BY-SA 3.0, via Wikimedia Commons.",
+          "sort_order": 2,
+          "is_primary": false
         }
       ]
     },
@@ -110,21 +116,24 @@
       "images": [
         {
           "file": "jersey-heifer-limuru-1.webp",
-          "alt_text": "Illustration of a Jersey heifer, side view",
-          "is_primary": true,
-          "sort_order": 0
+          "alt_text": "Fawn Jersey cow in green grass, looking at the camera",
+          "caption": "Sample photo of a similar animal. Photo: Unukorno, CC BY 4.0, via Wikimedia Commons.",
+          "sort_order": 0,
+          "is_primary": true
         },
         {
           "file": "jersey-heifer-limuru-2.webp",
-          "alt_text": "Illustration of a Jersey heifer in the paddock",
-          "is_primary": false,
-          "sort_order": 1
+          "alt_text": "Fawn Jersey cow standing in a coastal pasture",
+          "caption": "Sample photo of a similar animal. Photo: Man vyi, Public domain, via Wikimedia Commons.",
+          "sort_order": 1,
+          "is_primary": false
         },
         {
           "file": "jersey-heifer-limuru-3.webp",
-          "alt_text": "Illustration of a Jersey heifer, head and shoulders",
-          "is_primary": false,
-          "sort_order": 2
+          "alt_text": "Close-up of a Jersey cow's face with a yellow ear tag",
+          "caption": "Sample photo of a similar animal. Photo: ITookSomePhotos, CC BY-SA 4.0, via Wikimedia Commons.",
+          "sort_order": 2,
+          "is_primary": false
         }
       ]
     },
@@ -144,21 +153,24 @@
       "images": [
         {
           "file": "guernsey-cow-olkalou-1.webp",
-          "alt_text": "Illustration of a Guernsey cow, side view",
-          "is_primary": true,
-          "sort_order": 0
+          "alt_text": "Golden-fawn Guernsey cow grazing, side view",
+          "caption": "Sample photo of a similar animal. Photo: Man vyi, Public domain, via Wikimedia Commons.",
+          "sort_order": 0,
+          "is_primary": true
         },
         {
           "file": "guernsey-cow-olkalou-2.webp",
-          "alt_text": "Illustration of a Guernsey cow in the paddock",
-          "is_primary": false,
-          "sort_order": 1
+          "alt_text": "Guernsey cow with fawn and white markings in a muddy yard",
+          "caption": "Sample photo of a similar animal. Photo: Miyuki Meinaka, CC BY-SA 4.0, via Wikimedia Commons.",
+          "sort_order": 1,
+          "is_primary": false
         },
         {
           "file": "guernsey-cow-olkalou-3.webp",
-          "alt_text": "Illustration of a Guernsey cow, head and shoulders",
-          "is_primary": false,
-          "sort_order": 2
+          "alt_text": "Guernsey cow standing in a fenced sand pen",
+          "caption": "Sample photo of a similar animal. Photo: boliyou, CC BY-SA 2.0, via Wikimedia Commons.",
+          "sort_order": 2,
+          "is_primary": false
         }
       ]
     },
@@ -178,21 +190,24 @@
       "images": [
         {
           "file": "boran-steer-nanyuki-1.webp",
-          "alt_text": "Illustration of a Boran steer, side view",
-          "is_primary": true,
-          "sort_order": 0
+          "alt_text": "Two humped zebu cattle grazing on green grass beside farm buildings in Kenya",
+          "caption": "Sample photo of a similar animal. Photo: DavyKirii, CC BY-SA 4.0, via Wikimedia Commons.",
+          "sort_order": 0,
+          "is_primary": true
         },
         {
           "file": "boran-steer-nanyuki-2.webp",
-          "alt_text": "Illustration of a Boran steer in the paddock",
-          "is_primary": false,
-          "sort_order": 1
+          "alt_text": "Humped zebu cattle grazing among acacia bush in Kenya",
+          "caption": "Sample photo of a similar animal. Photo: Regina Hart from Industry, United States, CC BY 2.0, via Wikimedia Commons.",
+          "sort_order": 1,
+          "is_primary": false
         },
         {
           "file": "boran-steer-nanyuki-3.webp",
-          "alt_text": "Illustration of a Boran steer, head and shoulders",
-          "is_primary": false,
-          "sort_order": 2
+          "alt_text": "Red zebu cattle resting close together on the ground",
+          "caption": "Sample photo of a similar animal. Photo: Tish Madesh, CC0, via Wikimedia Commons.",
+          "sort_order": 2,
+          "is_primary": false
         }
       ]
     },
@@ -212,21 +227,24 @@
       "images": [
         {
           "file": "sahiwal-steer-kajiado-1.webp",
-          "alt_text": "Illustration of a Sahiwal-cross steer, side view",
-          "is_primary": true,
-          "sort_order": 0
+          "alt_text": "Group of reddish-brown Sahiwal cattle in a fenced yard",
+          "caption": "Sample photo of a similar animal. Photo: Tish Madesh, CC0, via Wikimedia Commons.",
+          "sort_order": 0,
+          "is_primary": true
         },
         {
           "file": "sahiwal-steer-kajiado-2.webp",
-          "alt_text": "Illustration of a Sahiwal-cross steer in the paddock",
-          "is_primary": false,
-          "sort_order": 1
+          "alt_text": "Reddish-brown Sahiwal cow standing in a shed, side view",
+          "caption": "Sample photo of a similar animal. Photo: Harvinder Chandigarh, CC BY-SA 4.0, via Wikimedia Commons.",
+          "sort_order": 1,
+          "is_primary": false
         },
         {
           "file": "sahiwal-steer-kajiado-3.webp",
-          "alt_text": "Illustration of a Sahiwal-cross steer, head and shoulders",
-          "is_primary": false,
-          "sort_order": 2
+          "alt_text": "Herd of reddish-brown Sahiwal cattle facing the camera",
+          "caption": "Sample photo of a similar animal. Photo: Tish Madesh, CC0, via Wikimedia Commons.",
+          "sort_order": 2,
+          "is_primary": false
         }
       ]
     },
@@ -246,21 +264,17 @@
       "images": [
         {
           "file": "boran-bull-narok-1.webp",
-          "alt_text": "Illustration of a Boran bull, side view",
-          "is_primary": true,
-          "sort_order": 0
+          "alt_text": "Grey-white Boran bull with a large hump standing in long grass in Kenya",
+          "caption": "Sample photo of a similar animal. Photo: Ngangaesther, CC BY-SA 4.0, via Wikimedia Commons.",
+          "sort_order": 0,
+          "is_primary": true
         },
         {
           "file": "boran-bull-narok-2.webp",
-          "alt_text": "Illustration of a Boran bull in the paddock",
-          "is_primary": false,
-          "sort_order": 1
-        },
-        {
-          "file": "boran-bull-narok-3.webp",
-          "alt_text": "Illustration of a Boran bull, head and shoulders",
-          "is_primary": false,
-          "sort_order": 2
+          "alt_text": "Man feeding a reddish humped bull on a farm, with more cattle behind",
+          "caption": "Sample photo of a similar animal. Photo: Kasomo chaila, CC BY-SA 4.0, via Wikimedia Commons.",
+          "sort_order": 1,
+          "is_primary": false
         }
       ]
     },
@@ -280,21 +294,17 @@
       "images": [
         {
           "file": "friesian-bull-eldoret-1.webp",
-          "alt_text": "Illustration of a Friesian bull, side view",
-          "is_primary": true,
-          "sort_order": 0
+          "alt_text": "Young black-and-white Friesian (Holstein) bull in a show pen, side view",
+          "caption": "Sample photo of a similar animal. Photo: Homoatrox, CC BY-SA 3.0, via Wikimedia Commons.",
+          "sort_order": 0,
+          "is_primary": true
         },
         {
           "file": "friesian-bull-eldoret-2.webp",
-          "alt_text": "Illustration of a Friesian bull in the paddock",
-          "is_primary": false,
-          "sort_order": 1
-        },
-        {
-          "file": "friesian-bull-eldoret-3.webp",
-          "alt_text": "Illustration of a Friesian bull, head and shoulders",
-          "is_primary": false,
-          "sort_order": 2
+          "alt_text": "Young black-and-white Friesian (Holstein) bull feeding in a show pen",
+          "caption": "Sample photo of a similar animal. Photo: Homoatrox, CC BY-SA 3.0, via Wikimedia Commons.",
+          "sort_order": 1,
+          "is_primary": false
         }
       ]
     },
@@ -314,21 +324,24 @@
       "images": [
         {
           "file": "sahiwal-bull-machakos-1.webp",
-          "alt_text": "Illustration of a Sahiwal bull, side view",
-          "is_primary": true,
-          "sort_order": 0
+          "alt_text": "Dark red Sahiwal bull with a hump, tethered on a farm, side view",
+          "caption": "Sample photo of a similar animal. Photo: Pavanaja, CC BY-SA 3.0, via Wikimedia Commons.",
+          "sort_order": 0,
+          "is_primary": true
         },
         {
           "file": "sahiwal-bull-machakos-2.webp",
-          "alt_text": "Illustration of a Sahiwal bull in the paddock",
-          "is_primary": false,
-          "sort_order": 1
+          "alt_text": "Sahiwal bull with a prominent hump, three-quarter view",
+          "caption": "Sample photo of a similar animal. Photo: Pavanaja, CC BY-SA 3.0, via Wikimedia Commons.",
+          "sort_order": 1,
+          "is_primary": false
         },
         {
           "file": "sahiwal-bull-machakos-3.webp",
-          "alt_text": "Illustration of a Sahiwal bull, head and shoulders",
-          "is_primary": false,
-          "sort_order": 2
+          "alt_text": "Reddish-brown Sahiwal cattle resting in a group",
+          "caption": "Sample photo of a similar animal. Photo: Tish Madesh, CC0, via Wikimedia Commons.",
+          "sort_order": 2,
+          "is_primary": false
         }
       ]
     },
@@ -348,21 +361,24 @@
       "images": [
         {
           "file": "friesian-calf-bomet-1.webp",
-          "alt_text": "Illustration of a Friesian heifer calf, side view",
-          "is_primary": true,
-          "sort_order": 0
+          "alt_text": "Black-and-white Friesian (Holstein) calf lying on sand",
+          "caption": "Sample photo of a similar animal. Photo: Jiel, CC BY-SA 3.0, via Wikimedia Commons.",
+          "sort_order": 0,
+          "is_primary": true
         },
         {
           "file": "friesian-calf-bomet-2.webp",
-          "alt_text": "Illustration of a Friesian heifer calf in the paddock",
-          "is_primary": false,
-          "sort_order": 1
+          "alt_text": "Black-and-white calf standing in a metal pen",
+          "caption": "Sample photo of a similar animal. Photo: Lameiro, CC BY-SA 4.0, via Wikimedia Commons.",
+          "sort_order": 1,
+          "is_primary": false
         },
         {
           "file": "friesian-calf-bomet-3.webp",
-          "alt_text": "Illustration of a Friesian heifer calf, head and shoulders",
-          "is_primary": false,
-          "sort_order": 2
+          "alt_text": "Black-and-white Holstein calf with an ear tag looking through a pen gate",
+          "caption": "Sample photo of a similar animal. Photo: Roee Shpernik, CC BY-SA 4.0, via Wikimedia Commons.",
+          "sort_order": 2,
+          "is_primary": false
         }
       ]
     },
@@ -382,21 +398,24 @@
       "images": [
         {
           "file": "ayrshire-calf-kericho-1.webp",
-          "alt_text": "Illustration of an Ayrshire bull calf, side view",
-          "is_primary": true,
-          "sort_order": 0
+          "alt_text": "Young red-and-white calf standing on grass",
+          "caption": "Sample photo of a similar animal. Photo: gailhampshire, CC BY 2.0, via Wikimedia Commons.",
+          "sort_order": 0,
+          "is_primary": true
         },
         {
           "file": "ayrshire-calf-kericho-2.webp",
-          "alt_text": "Illustration of an Ayrshire bull calf in the paddock",
-          "is_primary": false,
-          "sort_order": 1
+          "alt_text": "Red-and-white calves beside their hutch",
+          "caption": "Sample photo of a similar animal. Photo: Tsaag Valren, CC BY-SA 4.0, via Wikimedia Commons.",
+          "sort_order": 1,
+          "is_primary": false
         },
         {
           "file": "ayrshire-calf-kericho-3.webp",
-          "alt_text": "Illustration of an Ayrshire bull calf, head and shoulders",
-          "is_primary": false,
-          "sort_order": 2
+          "alt_text": "Red-and-white cow standing with her calf on grass",
+          "caption": "Sample photo of a similar animal. Photo: Uberprutser, CC BY-SA 4.0, via Wikimedia Commons.",
+          "sort_order": 2,
+          "is_primary": false
         }
       ]
     },
@@ -416,21 +435,24 @@
       "images": [
         {
           "file": "ankole-cow-migori-1.webp",
-          "alt_text": "Illustration of an Ankole cow, side view",
-          "is_primary": true,
-          "sort_order": 0
+          "alt_text": "Ankole cattle with very long upward-curving horns on a farm",
+          "caption": "Sample photo of a similar animal. Photo: sarahemcc, CC BY 2.0, via Wikimedia Commons.",
+          "sort_order": 0,
+          "is_primary": true
         },
         {
           "file": "ankole-cow-migori-2.webp",
-          "alt_text": "Illustration of an Ankole cow in the paddock",
-          "is_primary": false,
-          "sort_order": 1
+          "alt_text": "Dark red Ankole cow with long horns grazing on dry ground",
+          "caption": "Sample photo of a similar animal. Photo: Antoinetorrens, CC BY-SA 3.0, via Wikimedia Commons.",
+          "sort_order": 1,
+          "is_primary": false
         },
         {
           "file": "ankole-cow-migori-3.webp",
-          "alt_text": "Illustration of an Ankole cow, head and shoulders",
-          "is_primary": false,
-          "sort_order": 2
+          "alt_text": "Group of red and brown Ankole cattle on a hillside",
+          "caption": "Sample photo of a similar animal. Photo: Antoinetorrens, CC BY-SA 3.0, via Wikimedia Commons.",
+          "sort_order": 2,
+          "is_primary": false
         }
       ]
     },
@@ -450,21 +472,24 @@
       "images": [
         {
           "file": "simmental-steer-meru-1.webp",
-          "alt_text": "Illustration of a Simmental-cross steer, side view",
-          "is_primary": true,
-          "sort_order": 0
+          "alt_text": "Red-brown Simmental-type young bull held at a show, side view",
+          "caption": "Sample photo of a similar animal. Photo: José Reynaldo da Fonseca, CC BY 2.5, via Wikimedia Commons.",
+          "sort_order": 0,
+          "is_primary": true
         },
         {
           "file": "simmental-steer-meru-2.webp",
-          "alt_text": "Illustration of a Simmental-cross steer in the paddock",
-          "is_primary": false,
-          "sort_order": 1
+          "alt_text": "Red Simmental-type young bull in a show ring",
+          "caption": "Sample photo of a similar animal. Photo: José Reynaldo da Fonseca, CC BY 2.5, via Wikimedia Commons.",
+          "sort_order": 1,
+          "is_primary": false
         },
         {
           "file": "simmental-steer-meru-3.webp",
-          "alt_text": "Illustration of a Simmental-cross steer, head and shoulders",
-          "is_primary": false,
-          "sort_order": 2
+          "alt_text": "Red-and-white Simmental bull standing on a red earth floor",
+          "caption": "Sample photo of a similar animal. Photo: José Reynaldo da Fonseca, CC BY 2.5, via Wikimedia Commons.",
+          "sort_order": 2,
+          "is_primary": false
         }
       ]
     },
@@ -484,21 +509,24 @@
       "images": [
         {
           "file": "jersey-cross-calf-githunguri-1.webp",
-          "alt_text": "Illustration of a Jersey-Friesian cross heifer calf, side view",
-          "is_primary": true,
-          "sort_order": 0
+          "alt_text": "Light brown calf with a rope collar looking to the side",
+          "caption": "Sample photo of a similar animal. Photo: Zeynel Cebeci, CC BY-SA 4.0, via Wikimedia Commons.",
+          "sort_order": 0,
+          "is_primary": true
         },
         {
           "file": "jersey-cross-calf-githunguri-2.webp",
-          "alt_text": "Illustration of a Jersey-Friesian cross heifer calf in the paddock",
-          "is_primary": false,
-          "sort_order": 1
+          "alt_text": "Light brown calf resting on grass under a tree",
+          "caption": "Sample photo of a similar animal. Photo: Ganesh Mohan T, CC BY-SA 4.0, via Wikimedia Commons.",
+          "sort_order": 1,
+          "is_primary": false
         },
         {
           "file": "jersey-cross-calf-githunguri-3.webp",
-          "alt_text": "Illustration of a Jersey-Friesian cross heifer calf, head and shoulders",
-          "is_primary": false,
-          "sort_order": 2
+          "alt_text": "Close-up of a light brown calf's face",
+          "caption": "Sample photo of a similar animal. Photo: Ganesh Mohan T, CC BY-SA 4.0, via Wikimedia Commons.",
+          "sort_order": 2,
+          "is_primary": false
         }
       ]
     }

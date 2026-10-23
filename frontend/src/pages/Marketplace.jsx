@@ -72,7 +72,7 @@ export default function Marketplace() {
       </header>
       {SHOW_SAMPLE_DATA_NOTICE && (
       <SampleNotice className="mt-6 max-w-3xl">
-        Preview: the listings currently on the marketplace are fictional sample data with illustrated images.
+        Preview: the listings currently on the marketplace are fictional sample data. Photos show similar animals, not the ones listed.
       </SampleNotice>
       )}
 

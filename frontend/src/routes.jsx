@@ -9,6 +9,7 @@ import LivestockDetails from './pages/LivestockDetails'
 import Login from './pages/Login'
 import Marketplace from './pages/Marketplace'
 import NotFound from './pages/NotFound'
+import PhotoCredits from './pages/PhotoCredits'
 import Privacy from './pages/Privacy'
 import Register from './pages/Register'
 import Terms from './pages/Terms'
@@ -54,6 +55,7 @@ export const routes = [
           { path: 'register', element: <Register /> },
           { path: 'terms', element: <Terms /> },
           { path: 'privacy', element: <Privacy /> },
+          { path: 'photo-credits', element: <PhotoCredits /> },
           {
             element: <RequireAuth />,
             children: [{ path: 'account', element: <AccountDashboard /> }],
