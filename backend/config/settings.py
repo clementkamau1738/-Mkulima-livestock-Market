@@ -26,6 +26,10 @@ if ENV_FILE.is_file():
 SECRET_KEY = env.str("DJANGO_SECRET_KEY")
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=[])
+# Render sets the service's public host name (e.g. mkulima.onrender.com).
+RENDER_EXTERNAL_HOSTNAME = env.str("RENDER_EXTERNAL_HOSTNAME", default="")
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 if not DEBUG:
     # Refuse to start in production with settings that would be unsafe or broken.
@@ -86,18 +90,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": env.str("POSTGRES_DB"),
-        "USER": env.str("POSTGRES_USER"),
-        "PASSWORD": env.str("POSTGRES_PASSWORD"),
-        "HOST": env.str("POSTGRES_HOST", default="localhost"),
-        "PORT": env.int("POSTGRES_PORT", default=5432),
-        "CONN_MAX_AGE": env.int("POSTGRES_CONN_MAX_AGE", default=60),
-        "CONN_HEALTH_CHECKS": True,
+# DATABASE_URL (as hosting providers such as Render supply it) wins over the
+# separate POSTGRES_* variables.
+if env.str("DATABASE_URL", default=""):
+    DATABASES = {"default": env.db_url("DATABASE_URL")}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": env.str("POSTGRES_DB"),
+            "USER": env.str("POSTGRES_USER"),
+            "PASSWORD": env.str("POSTGRES_PASSWORD"),
+            "HOST": env.str("POSTGRES_HOST", default="localhost"),
+            "PORT": env.int("POSTGRES_PORT", default=5432),
+        }
     }
-}
+DATABASES["default"].update(CONN_MAX_AGE=env.int("POSTGRES_CONN_MAX_AGE", default=60), CONN_HEALTH_CHECKS=True)
 
 AUTH_USER_MODEL = "accounts.User"
 
@@ -133,18 +141,19 @@ MEDIA_ROOT = env.path("MEDIA_ROOT", default=BASE_DIR / "media")
 if MEDIA_STORAGE == "local":
     DEFAULT_STORAGE = {"BACKEND": "django.core.files.storage.FileSystemStorage"}
 elif MEDIA_STORAGE == "s3":
+    # Optional values left blank (e.g. in a hosting dashboard) count as unset.
     DEFAULT_STORAGE = {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
             "bucket_name": env.str("S3_BUCKET_NAME"),
             "access_key": env.str("S3_ACCESS_KEY_ID"),
             "secret_key": env.str("S3_SECRET_ACCESS_KEY"),
-            "endpoint_url": env.str("S3_ENDPOINT_URL", default=None),
-            "region_name": env.str("S3_REGION_NAME", default=None),
+            "endpoint_url": env.str("S3_ENDPOINT_URL", default="") or None,
+            "region_name": env.str("S3_REGION_NAME", default="") or None,
             # "path" for MinIO and most self-hosted stores; "virtual" or unset for AWS.
-            "addressing_style": env.str("S3_ADDRESSING_STYLE", default=None),
+            "addressing_style": env.str("S3_ADDRESSING_STYLE", default="") or None,
             # Public-read bucket or CDN domain: plain URLs. Private bucket: signed URLs.
-            "custom_domain": env.str("S3_CUSTOM_DOMAIN", default=None),
+            "custom_domain": env.str("S3_CUSTOM_DOMAIN", default="") or None,
             "querystring_auth": env.bool("S3_SIGNED_URLS", default=False),
             "location": env.str("S3_LOCATION", default="media"),
             # Never overwrite: stored names are random, so a clash means a bug.
@@ -165,6 +174,21 @@ STORAGES = {
         else "whitenoise.storage.CompressedManifestStaticFilesStorage"
     },
 }
+
+# Optional: Django also serves the built React app (single-service hosting
+# such as Render's free plan, see Dockerfile.render). Unset in the Docker
+# stack, where nginx serves the app.
+SPA_ROOT = env.str("SPA_ROOT", default="")
+if SPA_ROOT:
+    WHITENOISE_ROOT = SPA_ROOT
+    # Vite's hashed bundles and Django's hashed static files never change.
+    WHITENOISE_IMMUTABLE_FILE_TEST = r"^/(assets/|static/.+\.[0-9a-f]{12}\.)"
+# Image sources the app's Content-Security-Policy allows (SPA_ROOT only; nginx
+# has its own copy). Defaults to the S3 custom domain when there is one.
+CSP_IMG_SRC = env.str("CSP_IMG_SRC", default="")
+if not CSP_IMG_SRC:
+    media_domain = env.str("S3_CUSTOM_DOMAIN", default="") if MEDIA_STORAGE == "s3" else ""
+    CSP_IMG_SRC = f"'self' data: https://{media_domain}" if media_domain else "'self' data:"
 
 # Throttle counters and other shared state. The default per-process memory
 # cache is fine for one development server; with several gunicorn workers set

@@ -7,6 +7,8 @@ Images are openly licensed photographs from Wikimedia Commons of similar
 animals (not the fictional animals listed); each image's caption carries its
 credit, and sample_data/CREDITS.md lists author, license and source.
 --replace-images swaps the photos of the sample listings for the current set.
+--if-empty does nothing once any listing exists (for automatic runs on start,
+so sample listings an admin deleted are not brought back).
 """
 
 import json
@@ -32,9 +34,17 @@ class Command(BaseCommand):
             action="store_true",
             help="Delete the sample listings' current images (and files) and add the bundled photos.",
         )
+        parser.add_argument(
+            "--if-empty",
+            action="store_true",
+            help="Skip entirely when the database already has any listing.",
+        )
 
     @transaction.atomic
     def handle(self, *args, **options):
+        if options["if_empty"] and LivestockListing.objects.exists():
+            self.stdout.write("Listings already exist; sample data not loaded.")
+            return
         data = json.loads((DATA_DIR / "sample_data.json").read_text())
         counts = {"categories": 0, "listings": 0, "images": 0}
 

@@ -27,7 +27,7 @@ PRODUCTION = {**BASE_ENV, "DJANGO_HSTS_INCLUDE_SUBDOMAINS": "True", "DJANGO_HSTS
 
 
 def run(env, *args):
-    clean = {k: v for k, v in os.environ.items() if not k.startswith(("DJANGO_", "POSTGRES_", "MEDIA_", "S3_", "CACHE_"))}
+    clean = {k: v for k, v in os.environ.items() if not k.startswith(("DJANGO_", "POSTGRES_", "MEDIA_", "S3_", "CACHE_", "DATABASE_", "RENDER_", "SPA_", "CSP_"))}
     return subprocess.run(
         [sys.executable, *args], cwd=BACKEND, env={**clean, **env}, capture_output=True, text=True, timeout=120
     )
@@ -84,3 +84,22 @@ class StartupConfigurationTests(SimpleTestCase):
         )
         result = run(BASE_ENV, "-c", code)
         self.assertEqual(result.stdout.split(), ["True", "True", "True", "True", "31536000", "DENY", "whitenoise"], result.stderr)
+
+    def test_hosting_provider_variables(self):
+        # Render: DATABASE_URL replaces the POSTGRES_* variables, and the
+        # service's public host name is allowed automatically.
+        env = {k: v for k, v in BASE_ENV.items() if not k.startswith("POSTGRES_")}
+        env.update(DATABASE_URL="postgresql://u:p@db.internal:5432/market", RENDER_EXTERNAL_HOSTNAME="market.onrender.com")
+        code = (
+            "import django; django.setup(); from django.conf import settings as s; d = s.DATABASES['default']; "
+            "print(d['HOST'], d['NAME'], d['CONN_HEALTH_CHECKS'], ','.join(s.ALLOWED_HOSTS))"
+        )
+        result = run(env, "-c", code)
+        self.assertEqual(result.stdout.split(), ["db.internal", "market", "True", "mkulima.example,market.onrender.com"], result.stderr)
+
+    def test_image_policy_allows_the_media_domain(self):
+        code = "import django; django.setup(); from django.conf import settings as s; print(s.CSP_IMG_SRC)"
+        self.assertEqual(run(BASE_ENV, "-c", code).stdout.strip(), "'self' data:")
+        s3 = {**BASE_ENV, "MEDIA_STORAGE": "s3", "S3_BUCKET_NAME": "b", "S3_ACCESS_KEY_ID": "k", "S3_SECRET_ACCESS_KEY": "s"}
+        result = run({**s3, "S3_CUSTOM_DOMAIN": "pub-1.r2.dev", "S3_ENDPOINT_URL": ""}, "-c", code)
+        self.assertEqual(result.stdout.strip(), "'self' data: https://pub-1.r2.dev", result.stderr)

@@ -168,6 +168,16 @@ class SeedCommandTests(APITestCase):
         self.assertFalse(new & set(old))
         self.assertTrue(all(not storage.exists(name) for name in old), "old files deleted after commit")
 
+    def test_if_empty_skips_a_database_with_listings(self):
+        make_listing(title="Real heifer")
+        out = StringIO()
+        call_command("seed_sample_data", "--if-empty", stdout=out)
+        self.assertIn("sample data not loaded", out.getvalue())
+        self.assertEqual(LivestockListing.objects.count(), 1)
+        LivestockListing.objects.all().delete()
+        call_command("seed_sample_data", "--if-empty", stdout=StringIO())
+        self.assertEqual(LivestockListing.objects.count(), 14)
+
 
 class StatusFilterTests(APITestCase):
     def test_filter_by_public_status_only(self):

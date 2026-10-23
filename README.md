@@ -227,6 +227,28 @@ The supported target is one Linux server with Docker and Compose, running this s
 
 **Updating to a new release:** take a backup (below), `git pull`, `docker compose up -d --build`. The `migrate` service applies migrations before the new backend starts; if it fails, the old containers are replaced only after you fix it (`docker compose logs migrate`).
 
+### Deploying to Render (free demo)
+
+`render.yaml` is a Render Blueprint for a **free demonstration** deployment. Render's free plan has no private networking, so the nginx + gunicorn layout above does not fit. Instead, `Dockerfile.render` builds one image in which Django serves the API, Django Admin and the built React app on one origin (the `SPA_ROOT` setting; WhiteNoise serves the app's files and `index.html` gets the same security headers nginx sets). `backend/start-render.sh` runs migrations, loads the sample data into an empty database only (`seed_sample_data --if-empty`), creates the first administrator once (`ensure_superuser`), then starts gunicorn.
+
+Free plan limits (Render's documentation, checked October 2026):
+- The service sleeps after 15 idle minutes; the next visit waits about a minute.
+- **The free PostgreSQL database is deleted 30 days after it is created**, with every account, inquiry and request in it. Upgrade the database plan before then to keep data.
+- No persistent disk, so photos must go to an S3-compatible bucket.
+- No shell and no pre-deploy step, which is why release tasks run in the start script.
+
+Do not take real customers or real money on this setup.
+
+1. **Photo bucket.** For example Cloudflare R2: create a bucket, enable its public `r2.dev` URL (or a custom domain), and create an API token with Object Read & Write on that bucket. Note the account endpoint (`https://<account-id>.r2.cloudflarestorage.com`), the access key ID and the secret.
+2. **Blueprint.** Push this repository to GitHub. In the Render Dashboard: New > Blueprint, pick the repository. Render reads `render.yaml` and asks for the values marked `sync: false`:
+   - `DJANGO_SECRET_KEY`: `python3 -c "import secrets; print(secrets.token_urlsafe(50))"` (at least 50 characters).
+   - `DJANGO_SUPERUSER_EMAIL`, `DJANGO_SUPERUSER_PASSWORD`: the first administrator. Created on the first start if no account has that email; never changed afterwards (change the password in the app or Django Admin, not here).
+   - `S3_BUCKET_NAME`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `S3_ENDPOINT_URL`, `S3_REGION_NAME` (`auto` for R2), `S3_CUSTOM_DOMAIN` (the public host, e.g. `pub-xxxx.r2.dev`, without `https://`; it is also added to the Content-Security-Policy).
+3. **Deploy.** Render creates the database and the web service and deploys. The first start uploads the 40 sample photos to the bucket. The site is at `https://<service-name>.onrender.com`; the host name is allowed automatically (`RENDER_EXTERNAL_HOSTNAME`).
+4. **Updates.** Every push to `main` redeploys automatically. Migrations run on start.
+5. **Check the client IP once.** Rate limits read the client address from `X-Forwarded-For`; `render.yaml` sets `DJANGO_NUM_PROXIES=2` based on reports of how Render's proxies fill that header, which Render's documentation does not state. After the first deploy, sign in as the administrator, make a staff change (for example edit a listing's description and save), open `/admin/audit-log` and check the IP address column shows your own public address (search "what is my IP"). If it is a Render or Cloudflare address, try `1`.
+6. **Custom domain** (optional): add it in Render, then add it to `DJANGO_ALLOWED_HOSTS` (comma separated, keep `localhost`).
+
 ### Migrations procedure
 
 - Create migrations in development (`manage.py makemigrations`), commit them, and keep `makemigrations --check --dry-run` passing (the test checklist below runs it).
