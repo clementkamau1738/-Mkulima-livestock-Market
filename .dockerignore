@@ -1,4 +1,4 @@
-# Build context for Dockerfile.render (the repository root).
+# Build context for the root Dockerfile (single-service image for Render).
 .git
 .env
 .env.*

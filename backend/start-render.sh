@@ -1,5 +1,5 @@
 #!/bin/sh
-# Start command for Dockerfile.render. Render's free plan has no pre-deploy
+# Start command for the root Dockerfile (Render). Render's free plan has no pre-deploy
 # step or shell, so release tasks run here; each one is safe to repeat.
 set -e
 python manage.py migrate --noinput

@@ -176,7 +176,7 @@ STORAGES = {
 }
 
 # Optional: Django also serves the built React app (single-service hosting
-# such as Render's free plan, see Dockerfile.render). Unset in the Docker
+# such as Render's free plan, see the root Dockerfile). Unset in the Docker
 # stack, where nginx serves the app.
 SPA_ROOT = env.str("SPA_ROOT", default="")
 if SPA_ROOT:

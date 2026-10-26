@@ -1,6 +1,6 @@
 # Render Blueprint: FREE DEMO deployment (README "Deploying to Render").
 # One free web service (Django serving the API and the React app, built from
-# Dockerfile.render) and one free PostgreSQL database. Every push to main
+# the root Dockerfile) and one free PostgreSQL database. Every push to main
 # redeploys.
 #
 # Free plan limits: the service sleeps after 15 idle minutes (about a minute
@@ -24,7 +24,7 @@ services:
     runtime: docker
     plan: free
     region: frankfurt
-    dockerfilePath: ./Dockerfile.render
+    dockerfilePath: ./Dockerfile
     dockerContext: .
     healthCheckPath: /api/health/
     envVars:

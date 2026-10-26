@@ -229,7 +229,7 @@ The supported target is one Linux server with Docker and Compose, running this s
 
 ### Deploying to Render (free demo)
 
-`render.yaml` is a Render Blueprint for a **free demonstration** deployment. Render's free plan has no private networking, so the nginx + gunicorn layout above does not fit. Instead, `Dockerfile.render` builds one image in which Django serves the API, Django Admin and the built React app on one origin (the `SPA_ROOT` setting; WhiteNoise serves the app's files and `index.html` gets the same security headers nginx sets). `backend/start-render.sh` runs migrations, loads the sample data into an empty database only (`seed_sample_data --if-empty`), creates the first administrator once (`ensure_superuser`), then starts gunicorn.
+`render.yaml` is a Render Blueprint for a **free demonstration** deployment. Render's free plan has no private networking, so the nginx + gunicorn layout above does not fit. Instead, the root `Dockerfile` builds one image in which Django serves the API, Django Admin and the built React app on one origin (the `SPA_ROOT` setting; WhiteNoise serves the app's files and `index.html` gets the same security headers nginx sets). `backend/start-render.sh` runs migrations, loads the sample data into an empty database only (`seed_sample_data --if-empty`), creates the first administrator once (`ensure_superuser`), then starts gunicorn.
 
 Free plan limits (Render's documentation, checked October 2026):
 - The service sleeps after 15 idle minutes; the next visit waits about a minute.
