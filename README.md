@@ -325,6 +325,7 @@ Base path `/api/`. JSON only (photo upload uses multipart). Session authenticati
 | GET | `/livestock/{id}/related/` | Public | Up to 3 open listings in the same category |
 | GET | `/livestock/breeds/` | Public | Distinct breeds of published listings |
 | GET | `/categories/` | Public | Active categories |
+| GET | `/categories/{slug}/` | Public | One active category |
 | GET | `/payment-instructions/` | Public | `is_placeholder` is true until an administrator enters real payment details |
 | POST | `/inquiries/` | Public, 10/hour | `listing`, `full_name`, `phone`, `email?`, `message` |
 | POST | `/deposits/` | Signed in, 10/hour | `full_name`, `phone`, `amount`, `payment_reference`, `notes?` |
