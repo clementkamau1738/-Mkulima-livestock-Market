@@ -47,10 +47,12 @@ services:
       # Render terminates HTTPS and sets X-Forwarded-Proto.
       - key: DJANGO_TRUST_X_FORWARDED_PROTO
         value: "True"
-      # Client IP for rate limits: second-to-last X-Forwarded-For entry.
-      # Not confirmed in Render's docs; check it after the first deploy.
+      # Client IP for rate limits: third-from-last X-Forwarded-For entry
+      # (Cloudflare and Render's proxies add the rest). Measured on Render in
+      # November 2026: 3 gives the visitor's address and ignores a spoofed
+      # header; 2 gives a Cloudflare address. Recheck if Render changes it.
       - key: DJANGO_NUM_PROXIES
-        value: "2"
+        value: "3"
       # Low until HTTPS is proven on the final domain.
       - key: DJANGO_HSTS_SECONDS
         value: "300"
