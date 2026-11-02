@@ -6,6 +6,8 @@ import { uuid } from '../utils/uuid'
 // - a second submit while one is in flight is ignored (double clicks);
 // - every retry of the same submission reuses one idempotency key, so the
 //   server returns the original record instead of creating a duplicate;
+// - a retry with edited values is a new submission with a new key, so the
+//   server never answers it with the earlier record;
 // - server field errors land on the matching inputs, everything else in
 //   `formError` for an inline alert.
 export function useSubmission({ submit, fieldMap, setError, onSuccess }) {
@@ -17,10 +19,11 @@ export function useSubmission({ submit, fieldMap, setError, onSuccess }) {
     async (values) => {
       if (inFlight.current) return
       inFlight.current = true
-      keyRef.current ??= uuid()
+      const snapshot = JSON.stringify(values)
+      if (keyRef.current?.snapshot !== snapshot) keyRef.current = { key: uuid(), snapshot }
       setFormError(null)
       try {
-        const result = await submit(values, keyRef.current)
+        const result = await submit(values, keyRef.current.key)
         keyRef.current = null
         onSuccess(result)
       } catch (error) {

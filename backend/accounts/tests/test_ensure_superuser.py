@@ -22,7 +22,7 @@ class EnsureSuperuserTests(TestCase):
     def test_creates_an_administrator_once(self):
         self.assertIn("Administrator created", ensure(ENV))
         user = User.objects.get()
-        self.assertEqual((user.username, user.email, user.role, user.is_superuser), ("Owner@example.test", "Owner@example.test", User.Role.ADMIN, True))
+        self.assertEqual((user.username, user.email, user.role, user.is_superuser), ("owner@example.test", "Owner@example.test", User.Role.ADMIN, True))
         self.assertTrue(user.check_password(ENV["DJANGO_SUPERUSER_PASSWORD"]))
 
         # Later starts never touch it, even with a different password set.

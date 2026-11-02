@@ -23,9 +23,11 @@ if settings.DEBUG:
 
 if settings.SPA_ROOT:
     # Every other path is a route of the React app (its files are served by
-    # WhiteNoise from SPA_ROOT).
+    # WhiteNoise from SPA_ROOT). Paths that look like files (a dot in the
+    # last segment) are not routes: a missing image or favicon is a 404.
     django_admin = re.escape(settings.DJANGO_ADMIN_URL.rstrip("/"))
-    urlpatterns += [re_path(rf"^(?!api/|static/|media/|{django_admin}(?:/|$))", spa_index)]
+    not_routes = rf"(?!(?:api|static|media|{django_admin})(?:/|$))(?!(?:.*/)?[^/]*\.[^/]*/?$)"
+    urlpatterns += [re_path(rf"^(?:index\.html$|{not_routes})", spa_index)]
 
 handler404 = "config.views.not_found"
 handler500 = "config.views.server_failure"

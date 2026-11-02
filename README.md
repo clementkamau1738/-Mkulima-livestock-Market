@@ -246,8 +246,11 @@ Do not take real customers or real money on this setup.
    - `S3_BUCKET_NAME`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `S3_ENDPOINT_URL`, `S3_REGION_NAME` (`auto` for R2), `S3_CUSTOM_DOMAIN` (the public host, e.g. `pub-xxxx.r2.dev`, without `https://`; it is also added to the Content-Security-Policy).
 3. **Deploy.** Render creates the database and the web service and deploys. The first start uploads the 40 sample photos to the bucket. The site is at `https://<service-name>.onrender.com`; the host name is allowed automatically (`RENDER_EXTERNAL_HOSTNAME`).
 4. **Updates.** Every push to `main` redeploys automatically. Migrations run on start.
-5. **Client IP.** Rate limits read the client address from `X-Forwarded-For`, which Render's documentation does not describe. Measured on Render in November 2026, `DJANGO_NUM_PROXIES=3` gives the visitor's own address and ignores a spoofed header (`2` gives a Cloudflare address). To recheck: sign in as the administrator, make a staff change (for example edit a listing's description and save), open `/admin/audit-log` and check the IP address column shows your own public address.
-6. **Custom domain** (optional): add it in Render, then add it to `DJANGO_ALLOWED_HOSTS` (comma separated, keep `localhost`).
+5. **Client IP.** Rate limits read the client address from `X-Forwarded-For`, which Render's documentation does not describe. Measured on Render in November 2026, `DJANGO_NUM_PROXIES=3` gives the visitor's own address and ignores a spoofed header (`2` gives a Cloudflare address). To recheck: sign in as the administrator, make a staff change (for example edit a listing's description and save), open `/admin/audit-log` and check the IP address column shows your own public address. Then repeat the change while sending a made-up `X-Forwarded-For: 6.6.6.6` header (for example with the browser's request override tools or `curl`); the column must still show your own address.
+   - Shows a Cloudflare or Render address (for example `162.158.x.x`): raise `DJANGO_NUM_PROXIES` by one.
+   - Shows the made-up `6.6.6.6`: lower it by one. This is the dangerous direction, because visitors could then dodge rate limits by faking their address.
+   - Recheck after adding a custom domain, after putting your own Cloudflare proxy in front, and whenever Render changes its network.
+6. **Custom domain** (optional): add it in Render, then add it to `DJANGO_ALLOWED_HOSTS` (comma separated, keep `localhost`). A custom domain can change the number of proxies in front of the service, so repeat the client IP check in step 5.
 
 ### Migrations procedure
 
@@ -312,7 +315,7 @@ Base path `/api/`. JSON only (photo upload uses multipart). Session authenticati
 | GET | `/health/` | Public | `{"status": "ok"}` when the database and cache answer, else 503. Used by container health checks. |
 | GET | `/auth/session/` | Public | Current user or null; sets the CSRF cookie |
 | POST | `/auth/register/` | Public, 10/hour per IP | `full_name`, `email`, `phone`, `password`. Django password validation. Always creates a customer and signs them in. |
-| POST | `/auth/login/` | Public, 30/hour per IP and 10/hour per email | `email`, `password`. Wrong password and unknown email get the same 403 `invalid_credentials`. |
+| POST | `/auth/login/` | Public, 30/hour per IP and 10/hour per email from each IP | `email`, `password`. Wrong password and unknown email get the same 403 `invalid_credentials`. |
 | POST | `/auth/logout/` | Anyone | Always 204 |
 
 | Method | Path | Access | Notes |
@@ -398,12 +401,13 @@ Rules the settings enforce:
 - **Signing in works but the next request says "not signed in" on the Docker stack over HTTP.** `DJANGO_SECURE_COOKIES` is on, so the browser drops the cookie on plain HTTP. Same fix.
 - **400 Bad Request from Django behind a proxy.** The `Host` the proxy sends is not in `DJANGO_ALLOWED_HOSTS`.
 - **All visitors share one rate limit.** `STACK_NUM_PROXIES` (Docker) or `DJANGO_NUM_PROXIES` is lower than the number of proxies in front of Django, so Django sees the proxy's address as the client.
+- **Audit log shows IP addresses visitors typed in.** The opposite mistake: the proxy count is higher than the real number of proxies, so Django reads a client-supplied `X-Forwarded-For` entry and rate limits can be dodged. Lower the count by one and recheck (see "Deploying to Render", step 5).
 - **Images blocked in the browser after switching to S3.** Add the media origin to `CSP_IMG_SRC` and recreate the `web` container.
 - **`docker compose ps` shows `migrate` as `Exited (0)`.** That is expected: it runs once per start.
 - **403 `csrf_failed`.** The `csrftoken` cookie is missing or stale. Load any page first (the app calls `/api/auth/session/`, which sets it). When calling the API from scripts, GET that endpoint, then send the cookie value in `X-CSRFToken`.
 - **Deposits or withdrawals return 403 `not_authenticated`.** These need a signed-in customer since Phase 4. Inquiries still work as a guest.
 - **Staff cannot open `/admin` in the React app.** Check the user's role is `staff` or `admin` and the account is active (Django Admin > Users).
-- **429 on sign-in after a few attempts.** Sign-in is limited per IP and per email (`THROTTLE_LOGIN`, `THROTTLE_LOGIN_ACCOUNT`). Counters live in the cache and reset when the server restarts in development.
+- **429 on sign-in after a few attempts.** Sign-in is limited per IP and per email from each IP (`THROTTLE_LOGIN`, `THROTTLE_LOGIN_ACCOUNT`); failed attempts from another network never lock an account. Counters live in the cache and reset when the server restarts in development.
 
 ## Photos and licensing
 

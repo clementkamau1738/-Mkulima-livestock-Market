@@ -27,10 +27,12 @@ class Command(BaseCommand):
             self.stdout.write("An account with DJANGO_SUPERUSER_EMAIL already exists; left unchanged.")
             return
 
-        user = User(username=email, email=email)
+        # Same username rule as customer registration: the lowercased email.
+        username = email.lower()
+        user = User(username=username, email=email)
         try:
             validate_password(password, user)
         except ValidationError as exc:
             raise CommandError("DJANGO_SUPERUSER_PASSWORD is too weak: " + " ".join(exc.messages)) from None
-        User.objects.create_superuser(username=email, email=email, password=password)
+        User.objects.create_superuser(username=username, email=email, password=password)
         self.stdout.write(self.style.SUCCESS("Administrator created; sign in with DJANGO_SUPERUSER_EMAIL."))

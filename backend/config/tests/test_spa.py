@@ -25,6 +25,7 @@ class SpaRoutingTests(APITestCase):
 
     def _reload_urls(self):
         views._spa_index_html.cache_clear()
+        views._media_origin.cache_clear()
         importlib.reload(config.urls)
         clear_url_caches()
 
@@ -45,6 +46,36 @@ class SpaRoutingTests(APITestCase):
         self.assertEqual((response.status_code, response.json()["error"]["code"]), (404, "not_found"))
         self.assertRedirects(self.client.get("/django-admin"), "/django-admin/", status_code=301, target_status_code=302)
         self.assertEqual(self.client.get("/static/missing.css").status_code, 404)
+
+    def test_index_html_is_served_with_the_app_headers(self):
+        response = self.client.get("/index.html")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("frame-ancestors 'none'", response["Content-Security-Policy"])
+        self.assertEqual(response["Cache-Control"], "no-cache")
+        self.assertEqual(response["X-Frame-Options"], "DENY")
+
+    def test_missing_files_are_not_found(self):
+        for path in ("/favicon.ico", "/robots.txt", "/images/site/missing.webp", "/assets/old-abc123.js", "/api", "/media/x.webp"):
+            self.assertEqual(self.client.get(path).status_code, 404, path)
+
+    def test_image_policy_follows_the_media_storage(self):
+        s3 = {"bucket_name": "photos", "access_key": "k", "secret_key": "s", "region_name": "auto", "location": "media"}
+        cases = [
+            ({**s3, "custom_domain": "pub-9.r2.dev"}, "https://pub-9.r2.dev"),
+            ({**s3, "endpoint_url": "https://acct.r2.cloudflarestorage.com", "addressing_style": "path"}, "https://acct.r2.cloudflarestorage.com"),
+            ({**s3, "endpoint_url": "https://acct.r2.cloudflarestorage.com", "addressing_style": "path", "querystring_auth": True},
+             "https://acct.r2.cloudflarestorage.com"),
+        ]
+        for options, origin in cases:
+            storages = {"default": {"BACKEND": "storages.backends.s3.S3Storage", "OPTIONS": options},
+                        "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}}
+            with self.subTest(origin=origin), override_settings(STORAGES=storages, CSP_IMG_SRC="'self' data:"):
+                views._media_origin.cache_clear()
+                policy = self.client.get("/").headers["Content-Security-Policy"]
+                self.assertIn(f"img-src 'self' data: {origin};", policy)
+        views._media_origin.cache_clear()
+        local = self.client.get("/").headers["Content-Security-Policy"]
+        self.assertIn("img-src 'self' data: https://pub-1.r2.dev;", local, "local media adds nothing")
 
     def test_only_safe_methods(self):
         self.assertEqual(self.client.post("/marketplace").status_code, 405)

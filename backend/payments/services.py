@@ -53,6 +53,7 @@ CONFIRMATION_MESSAGES = {
 }
 
 DUPLICATE_PAYMENT_REFERENCE = "This payment reference has already been submitted. Contact support if you think this is a mistake."
+DUPLICATE_PAYOUT_REFERENCE = "This payout reference is already recorded on another withdrawal. Check the provider statement."
 
 
 def _payment_reference_in_use(payment_reference):
@@ -191,15 +192,22 @@ def review_withdrawal(pk, *, reviewer, to_status, reason="", confirmed=False, ex
             return {}
         if not external_reference:
             errors["external_reference"] = "Enter the payout reference from the provider."
+        elif Transaction.objects.filter(kind=Transaction.Kind.WITHDRAWAL, external_reference=external_reference).exists():
+            errors["external_reference"] = DUPLICATE_PAYOUT_REFERENCE
         if errors:
             return {}
-        txn = _record_transaction(
-            withdrawal,
-            Transaction.Kind.WITHDRAWAL,
-            reviewer=reviewer,
-            external_reference=external_reference,
-            notes="Payout confirmed by the reviewer.",
-        )
+        try:
+            txn = _record_transaction(
+                withdrawal,
+                Transaction.Kind.WITHDRAWAL,
+                reviewer=reviewer,
+                external_reference=external_reference,
+                notes="Payout confirmed by the reviewer.",
+            )
+        except IntegrityError:
+            # A concurrent completion recorded the same payout reference first.
+            errors["external_reference"] = DUPLICATE_PAYOUT_REFERENCE
+            return {}
         return {"transaction": txn.reference, "external_reference": external_reference}
 
     return _review(

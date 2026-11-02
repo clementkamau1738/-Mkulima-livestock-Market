@@ -1,8 +1,10 @@
+from datetime import timedelta
 from decimal import Decimal
 from io import StringIO
 
 from django.core.management import call_command
 from django.urls import reverse
+from django.utils import timezone
 
 from config.testing import APITestCase, image_upload, make_category, make_listing
 from livestock.models import Category, LivestockImage, LivestockListing
@@ -82,6 +84,16 @@ class FilterSortPaginateTests(APITestCase):
         self.assertEqual(self.titles("sort=price_desc")[0], "Boran bull")
         self.assertEqual(self.titles("sort=newest")[0], "Sahiwal bull")
         self.assertEqual(self.titles(), self.titles("sort=newest"))
+
+    def test_price_sorts_page_through_ties_without_repeats(self):
+        LivestockListing.objects.all().delete()
+        when = timezone.now() - timedelta(days=2)
+        ids = {make_listing(price_kes=Decimal("90000"), published_at=when).pk for _ in range(7)}
+        for sort in ("price_asc", "price_desc"):
+            seen = []
+            for page in (1, 2, 3):
+                seen += [r["id"] for r in self.client.get(f"{LIST_URL}?sort={sort}&page_size=3&page={page}").json()["results"]]
+            self.assertEqual(seen, sorted(ids, reverse=True), sort)
 
     def test_pagination_shape(self):
         data = self.client.get(f"{LIST_URL}?page_size=3&page=2").json()

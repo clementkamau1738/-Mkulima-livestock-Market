@@ -13,7 +13,11 @@ class IPScopedRateThrottle(ScopedRateThrottle):
 
 
 class LoginAccountThrottle(SimpleRateThrottle):
-    """Limits sign-in attempts per email address, from any IP."""
+    """Limits sign-in attempts per email address from each client IP.
+
+    Keyed by IP as well as email so that failed attempts elsewhere cannot lock
+    the owner out of their own account. Guessing from many addresses is slowed
+    by the per-IP `login` limit and the password validators instead."""
 
     scope = "login_account"
 
@@ -21,5 +25,5 @@ class LoginAccountThrottle(SimpleRateThrottle):
         email = str(request.data.get("email", "")).strip().lower() if hasattr(request.data, "get") else ""
         if not email:
             return None
-        digest = hashlib.sha256(email.encode()).hexdigest()
+        digest = hashlib.sha256(f"{email}|{self.get_ident(request)}".encode()).hexdigest()
         return self.cache_format % {"scope": self.scope, "ident": digest}

@@ -97,9 +97,9 @@ class StartupConfigurationTests(SimpleTestCase):
         result = run(env, "-c", code)
         self.assertEqual(result.stdout.split(), ["db.internal", "market", "True", "mkulima.example,market.onrender.com"], result.stderr)
 
-    def test_image_policy_allows_the_media_domain(self):
-        code = "import django; django.setup(); from django.conf import settings as s; print(s.CSP_IMG_SRC)"
-        self.assertEqual(run(BASE_ENV, "-c", code).stdout.strip(), "'self' data:")
+    def test_custom_domain_is_a_host_name(self):
         s3 = {**BASE_ENV, "MEDIA_STORAGE": "s3", "S3_BUCKET_NAME": "b", "S3_ACCESS_KEY_ID": "k", "S3_SECRET_ACCESS_KEY": "s"}
-        result = run({**s3, "S3_CUSTOM_DOMAIN": "pub-1.r2.dev", "S3_ENDPOINT_URL": ""}, "-c", code)
-        self.assertEqual(result.stdout.strip(), "'self' data: https://pub-1.r2.dev", result.stderr)
+        code = "import django; django.setup(); from django.conf import settings as s; print(s.STORAGES['default']['OPTIONS']['custom_domain'])"
+        for value, expected in (("https://pub-1.r2.dev/", "pub-1.r2.dev"), ("pub-1.r2.dev", "pub-1.r2.dev"), ("", "None")):
+            result = run({**s3, "S3_CUSTOM_DOMAIN": value}, "-c", code)
+            self.assertEqual(result.stdout.strip(), expected, result.stderr)

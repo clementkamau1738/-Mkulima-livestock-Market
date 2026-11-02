@@ -6,8 +6,8 @@ from .models import LivestockListing
 
 SORT_ORDERING = {
     "newest": ("-published_at", "-id"),
-    "price_asc": ("price_kes", "-published_at"),
-    "price_desc": ("-price_kes", "-published_at"),
+    "price_asc": ("price_kes", "-published_at", "-id"),
+    "price_desc": ("-price_kes", "-published_at", "-id"),
 }
 
 

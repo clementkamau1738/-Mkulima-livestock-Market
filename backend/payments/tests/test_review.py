@@ -1,6 +1,7 @@
 import threading
 from decimal import Decimal
 
+from django.core.exceptions import ValidationError
 from django.db import connection
 from django.test import TransactionTestCase
 from django.urls import reverse
@@ -128,6 +129,18 @@ class WithdrawalReviewTests(ReviewTestCase):
         self.assertEqual(statuses, ["pending", "approved", "processing", "completed"])
         self.assertEqual(AuditLog.objects.filter(target_type="payments.withdrawalrequest").count(), 3)
 
+    def test_payout_reference_settles_only_one_withdrawal(self):
+        first, second = new_withdrawal(self.customer), new_withdrawal(self.customer)
+        for withdrawal in (first, second):
+            self.transition("withdrawal", withdrawal, status="approved", confirmed=True)
+            self.transition("withdrawal", withdrawal, status="processing")
+        self.assertEqual(self.transition("withdrawal", first, status="completed", confirmed=True, external_reference="SFC12345XY").status_code, 200)
+        response = self.transition("withdrawal", second, status="completed", confirmed=True, external_reference=" sfc12345xy ")
+        self.assertError(response, 400, fields=["external_reference"])
+        second.refresh_from_db()
+        self.assertEqual(second.status, "processing")
+        self.assertEqual(Transaction.objects.count(), 1)
+
     def test_steps_cannot_be_skipped(self):
         withdrawal = new_withdrawal(self.customer)
         self.assertError(self.transition("withdrawal", withdrawal, status="processing"), 409, "invalid_transition")
@@ -232,3 +245,19 @@ class ConcurrentReviewTests(TransactionTestCase):
         self.assertEqual(Transaction.objects.filter(withdrawal=withdrawal).count(), 1)
         self.assertEqual(WithdrawalRequest.objects.get().status, "completed")
         self.assertEqual(DepositRequest.objects.count(), 0)
+
+    def test_racing_completions_cannot_reuse_a_payout_reference(self):
+        withdrawals = [new_withdrawal(self.customer) for _ in range(4)]
+        for withdrawal in withdrawals:
+            review_withdrawal(withdrawal.pk, reviewer=self.reviewers[0], to_status="approved", confirmed=True)
+            review_withdrawal(withdrawal.pk, reviewer=self.reviewers[0], to_status="processing")
+        results = self.race(
+            [
+                lambda w=w: review_withdrawal(w.pk, reviewer=self.reviewers[1], to_status="completed", confirmed=True, external_reference="SFC0002")
+                for w in withdrawals
+            ]
+        )
+        self.assertEqual(sum(isinstance(r, tuple) for r in results), 1, results)
+        self.assertTrue(all(isinstance(r, ValidationError) for r in results if not isinstance(r, tuple)), results)
+        self.assertEqual(Transaction.objects.filter(external_reference="SFC0002").count(), 1)
+        self.assertEqual(WithdrawalRequest.objects.filter(status="completed").count(), 1)

@@ -1,9 +1,11 @@
 import logging
 from functools import lru_cache
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from django.conf import settings
 from django.core.cache import cache
+from django.core.files.storage import default_storage
 from django.db import connection
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_GET, require_safe
@@ -52,6 +54,23 @@ def _spa_index_html():
     return (Path(settings.SPA_ROOT) / "index.html").read_bytes()
 
 
+@lru_cache(maxsize=1)
+def _media_origin():
+    """Where uploaded photos are served from, when that is another host (object
+    storage: custom domain, bucket endpoint or signed URLs). Read from the
+    storage itself, so the policy always matches the photo URLs."""
+    parts = urlsplit(default_storage.url("csp-probe.webp"))
+    return f"{parts.scheme}://{parts.netloc}" if parts.scheme and parts.netloc else ""
+
+
+def _img_src():
+    sources = settings.CSP_IMG_SRC.split()
+    origin = _media_origin()
+    if origin and origin not in sources:
+        sources.append(origin)
+    return " ".join(sources)
+
+
 @require_safe
 def spa_index(request):
     """The React app's index.html for every client-side route (SPA_ROOT only).
@@ -59,7 +78,7 @@ def spa_index(request):
     response = HttpResponse(_spa_index_html(), content_type="text/html; charset=utf-8")
     response["Content-Security-Policy"] = (
         "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; "
-        f"img-src {settings.CSP_IMG_SRC}; font-src 'self'; connect-src 'self'; object-src 'none'; "
+        f"img-src {_img_src()}; font-src 'self'; connect-src 'self'; object-src 'none'; "
         "base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
     )
     response["Permissions-Policy"] = "camera=(), microphone=(), geolocation=(), payment=()"

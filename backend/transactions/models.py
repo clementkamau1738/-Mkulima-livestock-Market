@@ -48,6 +48,13 @@ class Transaction(ImmutableModel):
                 | (Q(kind="withdrawal") & Q(withdrawal__isnull=False) & Q(deposit__isnull=True)),
                 name="transaction_links_one_request",
             ),
+            # One provider payout settles one withdrawal. (Deposit references
+            # are kept unique on DepositRequest itself.)
+            models.UniqueConstraint(
+                fields=["external_reference"],
+                condition=Q(kind="withdrawal") & ~Q(external_reference=""),
+                name="transaction_withdrawal_payout_reference_unique",
+            ),
         ]
 
     def __str__(self):

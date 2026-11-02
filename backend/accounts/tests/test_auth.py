@@ -114,12 +114,17 @@ class LoginTests(CsrfClientMixin, APITestCase):
         User.objects.filter(pk=self.user.pk).update(is_active=False)
         self.assertError(client.get(reverse("deposit-list")), 403, "not_authenticated")
 
-    def test_attempts_are_limited_per_account_across_ips(self):
-        for i in range(10):
-            self.client.post(LOGIN, {"email": "wanjiru@example.test", "password": "wrong"}, REMOTE_ADDR=f"10.0.0.{i}")
-        # Even the right password from a fresh address is refused for now.
+    def test_attempts_are_limited_per_account_from_one_ip(self):
+        for _ in range(10):
+            self.client.post(LOGIN, {"email": "Wanjiru@example.test", "password": "wrong"}, REMOTE_ADDR="10.0.0.1")
         right = {"email": "wanjiru@example.test", "password": PASSWORD}
-        self.assertError(self.client.post(LOGIN, right, REMOTE_ADDR="10.0.1.1"), 429, "throttled")
+        self.assertError(self.client.post(LOGIN, right, REMOTE_ADDR="10.0.0.1"), 429, "throttled")
+
+    def test_failed_attempts_elsewhere_cannot_lock_the_owner_out(self):
+        for _ in range(10):
+            self.client.post(LOGIN, {"email": "wanjiru@example.test", "password": "wrong"}, REMOTE_ADDR="10.0.0.66")
+        right = {"email": "wanjiru@example.test", "password": PASSWORD}
+        self.assertEqual(self.client.post(LOGIN, right, REMOTE_ADDR="10.0.1.1").status_code, 200)
 
     def test_attempts_are_limited_per_ip_and_forwarded_for_is_not_trusted(self):
         for i in range(30):

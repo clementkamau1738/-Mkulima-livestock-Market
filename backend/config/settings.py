@@ -6,6 +6,7 @@ repository's .env.example). Required variables raise ImproperlyConfigured
 with the variable name when missing, so misconfiguration fails at startup.
 """
 
+import re
 import sys
 from pathlib import Path
 
@@ -59,7 +60,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     # Serves collected static files (Django Admin, DRF) with long cache headers.
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "config.whitenoise.StaticFilesMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -153,7 +154,8 @@ elif MEDIA_STORAGE == "s3":
             # "path" for MinIO and most self-hosted stores; "virtual" or unset for AWS.
             "addressing_style": env.str("S3_ADDRESSING_STYLE", default="") or None,
             # Public-read bucket or CDN domain: plain URLs. Private bucket: signed URLs.
-            "custom_domain": env.str("S3_CUSTOM_DOMAIN", default="") or None,
+            # A host name; a pasted "https://" or trailing slash is dropped.
+            "custom_domain": re.sub(r"^https?://", "", env.str("S3_CUSTOM_DOMAIN", default="")).strip("/") or None,
             "querystring_auth": env.bool("S3_SIGNED_URLS", default=False),
             "location": env.str("S3_LOCATION", default="media"),
             # Never overwrite: stored names are random, so a clash means a bug.
@@ -184,11 +186,8 @@ if SPA_ROOT:
     # Vite's hashed bundles and Django's hashed static files never change.
     WHITENOISE_IMMUTABLE_FILE_TEST = r"^/(assets/|static/.+\.[0-9a-f]{12}\.)"
 # Image sources the app's Content-Security-Policy allows (SPA_ROOT only; nginx
-# has its own copy). Defaults to the S3 custom domain when there is one.
-CSP_IMG_SRC = env.str("CSP_IMG_SRC", default="")
-if not CSP_IMG_SRC:
-    media_domain = env.str("S3_CUSTOM_DOMAIN", default="") if MEDIA_STORAGE == "s3" else ""
-    CSP_IMG_SRC = f"'self' data: https://{media_domain}" if media_domain else "'self' data:"
+# has its own copy). The media storage's own host is always added to these.
+CSP_IMG_SRC = env.str("CSP_IMG_SRC", default="") or "'self' data:"
 
 # Throttle counters and other shared state. The default per-process memory
 # cache is fine for one development server; with several gunicorn workers set

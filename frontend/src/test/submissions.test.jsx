@@ -74,6 +74,24 @@ describe('Deposit submission against the API', () => {
     expect(retry.headers['Idempotency-Key']).toBe(first.headers['Idempotency-Key'])
   })
 
+  it('uses a new key when the form is edited after a failed attempt', async () => {
+    fakeApi.override('post', DEPOSITS, () => ({ networkError: true }), { once: true })
+    const { user } = renderRoute('/deposit')
+    await fillDeposit(user)
+    const submit = screen.getByRole('button', { name: 'Submit deposit request' })
+    await user.click(submit)
+    expect(await screen.findByText(/could not reach the server/i)).toBeInTheDocument()
+
+    const amount = screen.getByLabelText('Amount')
+    await user.clear(amount)
+    await user.type(amount, '50000')
+    await user.click(submit)
+    expect(await screen.findByText('DEP-TEST0001')).toBeInTheDocument()
+    const [first, edited] = depositPosts()
+    expect(edited.body.amount).toBe('50000')
+    expect(edited.headers['Idempotency-Key']).not.toBe(first.headers['Idempotency-Key'])
+  })
+
   it('sends one request for a double click', async () => {
     let release
     fakeApi.override('post', DEPOSITS, () => new Promise((resolve) => (release = resolve)), { once: true })
