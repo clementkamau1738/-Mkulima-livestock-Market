@@ -236,14 +236,16 @@ REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "config.exceptions.api_exception_handler",
     "DEFAULT_THROTTLE_CLASSES": [
         "rest_framework.throttling.AnonRateThrottle",
-        "rest_framework.throttling.UserRateThrottle",
+        "accounts.throttles.SignedInUserRateThrottle",
     ],
     "DEFAULT_THROTTLE_RATES": {
         # Generous for reads: many mobile users can share one carrier NAT IP.
         "anon": env.str("THROTTLE_ANON", default="600/minute"),
         "user": env.str("THROTTLE_USER", default="240/minute"),
         # Per-client limits on endpoints that create records.
-        "inquiries": env.str("THROTTLE_INQUIRIES", default="10/hour"),
+        "inquiries": env.str("THROTTLE_INQUIRIES", default="10/hour"),  # per signed-in account
+        "inquiries_guest": env.str("THROTTLE_INQUIRIES_GUEST", default="30/hour"),  # per IP
+        "inquiry_lookup": env.str("THROTTLE_INQUIRY_LOOKUP", default="30/hour"),  # guest tracking, per IP
         "financial": env.str("THROTTLE_FINANCIAL", default="10/hour"),
         # Sign-in is limited per client IP and, separately, per email address
         # so one account cannot be brute-forced from many addresses.

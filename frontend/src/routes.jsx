@@ -13,6 +13,7 @@ import PhotoCredits from './pages/PhotoCredits'
 import Privacy from './pages/Privacy'
 import Register from './pages/Register'
 import Terms from './pages/Terms'
+import TrackInquiry from './pages/TrackInquiry'
 import Withdrawal from './pages/Withdrawal'
 
 // The staff area loads on demand, so customers never download it.
@@ -51,6 +52,7 @@ export const routes = [
           { path: 'how-it-works', element: <HowItWorks /> },
           { path: 'deposit', element: <Deposit /> },
           { path: 'withdraw', element: <Withdrawal /> },
+          { path: 'track-inquiry', element: <TrackInquiry /> },
           { path: 'login', element: <Login /> },
           { path: 'register', element: <Register /> },
           { path: 'terms', element: <Terms /> },

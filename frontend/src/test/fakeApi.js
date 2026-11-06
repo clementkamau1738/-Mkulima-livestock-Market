@@ -106,7 +106,7 @@ export const TEST_ADMIN = { ...TEST_STAFF, id: 1, email: 'admin@example.test', f
 export const TEST_PASSWORD = 'a-strong-test-pass-91'
 
 function createState() {
-  return { overrides: [], requests: [], byKey: new Map(), counter: 0, user: null, accounts: [TEST_CUSTOMER, TEST_STAFF, TEST_ADMIN] }
+  return { overrides: [], requests: [], byKey: new Map(), records: [], counter: 0, user: null, accounts: [TEST_CUSTOMER, TEST_STAFF, TEST_ADMIN] }
 }
 
 const notAuthenticated = { status: 403, data: { error: { code: 'not_authenticated', message: 'Authentication credentials were not provided.' } } }
@@ -139,18 +139,51 @@ function authRoute(method, path, body) {
   return null
 }
 
-const MEMBER_ONLY = /^\/(deposits|withdrawals)\/$|^\/admin\//
+const MEMBER_ONLY = /^\/(deposits|withdrawals)\/$|^\/admin\/|^\/inquiries\/[^/]+\/cancel\/$/
+
+const digits = (phone = '') => String(phone).replace(/\D/g, '').slice(-9)
+const OPEN = ['pending', 'contacted', 'viewing_arranged']
+
+// Inquiries, as the real API returns them to whoever proved access.
+function inquiryRoute(method, path, body) {
+  let m
+  if (method === 'post' && path === '/inquiries/track/') {
+    const found = state.records.find(
+      (r) => r.kind === 'inquiries' && r.data.reference === body.reference.trim().toUpperCase() && digits(r.data.phone) === digits(body.phone),
+    )
+    if (!found) return { status: 404, data: { error: { code: 'not_found', message: 'No inquiry matches that reference and phone number. Check both and try again.' } } }
+    const { reference, listing, status, created_at, history } = found.data
+    return { status: 200, data: { reference, listing, status, created_at, history } }
+  }
+  if (method === 'post' && (m = path.match(/^\/inquiries\/([^/]+)\/cancel\/$/))) {
+    const found = state.records.find((r) => r.kind === 'inquiries' && r.data.reference === m[1] && r.userId === state.user.id)
+    if (!found) return notFound
+    if (!OPEN.includes(found.data.status) && found.data.status !== 'cancelled') {
+      return { status: 409, data: { error: { code: 'invalid_transition', message: 'This inquiry can no longer be cancelled.' } } }
+    }
+    if (found.data.status !== 'cancelled') {
+      found.data.history.push({ from_status: found.data.status, to_status: 'cancelled', reason: body.reason || 'Cancelled by the customer.', created_at: '2026-10-22T10:00:00+03:00' })
+      found.data.status = 'cancelled'
+    }
+    return { status: 200, data: found.data }
+  }
+  return null
+}
 
 function route(method, path, params, body, headers) {
   let m
   const auth = authRoute(method, path, body)
   if (auth) return auth
+  if (!state.user && MEMBER_ONLY.test(path)) return notAuthenticated
+  const inquiry = inquiryRoute(method, path, body)
+  if (inquiry) return inquiry
   if (!state.user && (MEMBER_ONLY.test(path) || (method === 'get' && /^\/inquiries\/$/.test(path)))) return notAuthenticated
   if (/^\/admin\//.test(path) && !state.user.is_reviewer) {
     return { status: 403, data: { error: { code: 'permission_denied', message: 'Only staff can access this area.' } } }
   }
   if (method === 'get' && (m = path.match(/^\/(inquiries|deposits|withdrawals)\/$/))) {
-    return { status: 200, data: { count: 0, page: 1, total_pages: 1, next: null, previous: null, results: [] } }
+    const results = state.records.filter((r) => r.kind === m[1] && r.userId === state.user.id).map((r) => r.data)
+    return { status: 200, data: { count: results.length, page: 1, total_pages: 1, next: null, previous: null, results } }
   }
   if (method === 'get' && path === '/livestock/') return listLivestock(params)
   if (method === 'get' && path === '/livestock/breeds/') return { status: 200, data: [...new Set(rows().map(({ l }) => l.breed))].sort() }
@@ -182,7 +215,12 @@ function route(method, path, params, body, headers) {
       created_at: '2026-10-21T10:00:00+03:00',
       history: [{ from_status: '', to_status: 'pending', created_at: '2026-10-21T10:00:00+03:00' }],
     }
+    if (m[1] === 'inquiries') {
+      const row = findRow(String(body.listing))
+      record.listing = row ? { id: body.listing, slug: row.l.id, title: row.l.title } : null
+    }
     if (key) state.byKey.set(key, record)
+    state.records.unshift({ kind: m[1], userId: state.user?.id ?? null, data: record })
     return { status: 201, data: record }
   }
   return notFound
@@ -204,6 +242,10 @@ export const fakeApi = {
   // { status, data }, { networkError: true }, { timeout: true } or a Promise of one.
   override(method, pattern, handler, { once = false } = {}) {
     state.overrides.push({ method, pattern, handler, once })
+  },
+  // A record already on the server, e.g. an inquiry on the customer's dashboard.
+  addRecord(kind, data, userId = state.user?.id ?? null) {
+    state.records.unshift({ kind, userId, data })
   },
   get requests() {
     return state.requests

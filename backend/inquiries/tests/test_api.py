@@ -72,11 +72,22 @@ class InquiryCreateTests(APITestCase):
         listing = make_listing(status=LivestockListing.Status.RESERVED)
         self.assertEqual(self.client.post(URL, self.payload(listing=listing.pk)).status_code, 201)
 
-    def test_create_is_rate_limited(self):
-        statuses = [self.client.post(URL, self.payload()).status_code for _ in range(11)]
-        self.assertEqual(statuses[:10], [201] * 10)
-        error = self.assertError(self.client.post(URL, self.payload()), 429, "throttled")
+    def test_guests_are_rate_limited_per_ip(self):
+        # 30/hour: generous, because many mobile users can share one carrier IP.
+        statuses = [self.client.post(URL, self.payload(phone=f"0712{n:06d}")).status_code for n in range(30)]
+        self.assertEqual(statuses, [201] * 30)
+        error = self.assertError(self.client.post(URL, self.payload(phone="0799000000")), 429, "throttled")
         self.assertIn("retry_after_seconds", error)
+
+    def test_signed_in_users_are_rate_limited_per_account(self):
+        self.client.force_authenticate(make_user())
+        listings = [make_listing() for _ in range(11)]
+        statuses = [self.client.post(URL, self.payload(listing=listing.pk)).status_code for listing in listings[:10]]
+        self.assertEqual(statuses, [201] * 10)
+        self.assertError(self.client.post(URL, self.payload(listing=listings[10].pk)), 429, "throttled")
+        # A different account on the same IP has its own allowance.
+        self.client.force_authenticate(make_user())
+        self.assertEqual(self.client.post(URL, self.payload(listing=listings[10].pk)).status_code, 201)
 
 
 class InquiryAccessTests(APITestCase):

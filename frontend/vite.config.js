@@ -1,7 +1,7 @@
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { loadEnv } from 'vite'
-import { defineConfig } from 'vitest/config'
+import { configDefaults, defineConfig } from 'vitest/config'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
@@ -27,6 +27,8 @@ export default defineConfig(({ mode }) => {
       environment: 'jsdom',
       globals: true,
       setupFiles: ['./src/test/setup.js'],
+      // Playwright specs under e2e/ run with `npm run test:e2e`, not Vitest.
+      exclude: [...configDefaults.exclude, 'e2e/**'],
       css: false,
       // Form tests type character by character; leave headroom on busy machines and CI.
       testTimeout: 15000,

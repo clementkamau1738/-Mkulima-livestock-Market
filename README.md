@@ -12,7 +12,7 @@ A responsive livestock marketplace for customers in Kenya. Visitors browse dairy
 | 4 | Authentication, customer dashboard, admin workflows | Done |
 | 5 | Testing, hardening, Docker, deployment | Done |
 
-**Current limits:** the marketplace shows the 14 seeded fictional listings, illustrated with openly licensed photos of similar animals (pages say so while `SHOW_SAMPLE_DATA_NOTICE` in `frontend/src/config/site.js` is on). Customers can register, sign in, send inquiries (also possible as a guest), submit deposit and withdrawal requests, and follow them on their dashboard. Staff review everything in the admin area at `/admin` in the React app. No real payment provider is connected: staff confirm payments and payouts by checking the official statements themselves, and the system records what they confirm. Payment details, contact details and legal text are placeholders.
+**Current limits:** the marketplace shows the 14 seeded fictional listings, illustrated with openly licensed photos of similar animals (pages say so while `SHOW_SAMPLE_DATA_NOTICE` in `frontend/src/config/site.js` is on). Customers can register, sign in, send inquiries (guests follow theirs on `/track-inquiry` with the reference and phone number), cancel their own open inquiries, submit deposit and withdrawal requests, and follow them on their dashboard. Staff review everything in the admin area at `/admin` in the React app. No real payment provider is connected: staff confirm payments and payouts by checking the official statements themselves, and the system records what they confirm. Payment details, contact details and legal text are placeholders.
 
 ## Architecture
 
@@ -25,6 +25,7 @@ frontend/   React + Vite + Tailwind SPA
   src/content/      Copy and configuration, e.g. workflows.js (wording for each status change)
   src/services/     api.js (the one Axios client and ApiError), mappers.js (API <-> UI shapes), livestockService, requestService, authService, accountService, adminService
   src/test/         Vitest suites; fixtures/ holds the sample data and fakeApi.js serves it as an in-memory Axios adapter
+  e2e/              Playwright browser tests (TypeScript): tests/, pages/ (page objects), fixtures/, helpers/sample-data.ts, support/ (starts the E2E backend)
   src/utils/        Formatting, URL <-> filter mapping, validation rules
   src/hooks/        useAsync, useSubmission (double-submit guard, idempotency key, server field errors), useAuth, useListParams (table filters in the URL), useSyncedDraft, useDocumentTitle
 backend/    Django + Django REST Framework
@@ -52,10 +53,10 @@ Each app keeps models, serializers, views, `services.py` (business rules and wri
 | --- | --- | --- |
 | Deposit | pending -> approved or rejected | Approve: reviewer confirms the payment is in the official statement; creates exactly one `Transaction`. Reject: reason required. |
 | Withdrawal | pending -> approved or rejected; approved -> processing; processing -> completed or failed | Approve: reviewer confirms the customer is owed the amount (no money moves). Complete: confirmation plus the provider's payout reference; creates exactly one `Transaction`. Reject and fail: reason required. |
-| Purchase inquiry | pending -> contacted -> viewing_arranged -> completed; cancelled from any non-final step | Cancel: reason required. |
+| Purchase inquiry | pending -> contacted -> viewing_arranged -> completed; cancelled from any non-final step | One open inquiry per buyer per animal: per account when signed in, per phone number for guests (database constraints back this up). Staff cancel: reason required. The customer can cancel their own open inquiry from the dashboard; the reason is optional. |
 | Listing | draft -> available or archived; available -> reserved, sold or archived; reserved -> available, sold or archived; sold -> archived; archived -> draft | Publishing needs at least one photo. New listings are always drafts. |
 
-Every change runs in one database transaction that locks the row (`select_for_update`). Two reviewers acting at once are applied one after the other: repeating a move that already happened returns 200 and changes nothing, and a conflicting move gets 409. Staff cannot review their own deposit or withdrawal. Each change writes a `RequestStatusHistory` row (requests) and an `AuditLog` row with the reviewer, time, reason and client IP. Customers see the status history and reasons, not who reviewed.
+Every change runs in one database transaction that locks the row (`select_for_update`). Two reviewers acting at once are applied one after the other: repeating a move that already happened returns 200 and changes nothing, and a conflicting move gets 409. Staff cannot review their own deposit or withdrawal, or move their own inquiry along. Each change writes a `RequestStatusHistory` row (requests) and an `AuditLog` row with the reviewer, time, reason and client IP. Customers see the status history and reasons, not who reviewed.
 
 Marketplace filters live in the URL (`?q=&category=&breed=&minPrice=&maxPrice=&sort=&page=`), so results can be bookmarked and shared. `livestockService` translates them to the API's names (`min_price`, `max_price`, ...).
 
@@ -81,6 +82,9 @@ Frontend (`frontend/package.json`):
 | Testing Library React / user-event / jest-dom | 16.3.3 / 14.6.8 / 7.0.1 |
 | jsdom | 30.1.2 |
 | oxlint (linter from the Vite template) | 1.89.0 |
+| Playwright (@playwright/test; Chromium build v1248) | 1.64.1 |
+| TypeScript (type checks the e2e/ folder only; the app stays JavaScript) | 6.0.3 |
+| @types/node | 22.20.5 |
 
 Backend (`backend/requirements.txt`):
 
@@ -124,6 +128,9 @@ The frontend has no offline mode. With the backend stopped, pages show their "co
 | `npm run lint` | oxlint; warnings fail the run |
 | `npm test` | Run the test suite once (uses the in-memory fake API; no backend needed) |
 | `npm run test:watch` | Tests in watch mode |
+| `npm run test:e2e` | Playwright browser tests against an isolated stack (see "End-to-end tests") |
+| `npm run test:e2e:ui` | The same in Playwright's UI mode |
+| `npm run typecheck:e2e` | Type check the Playwright suite |
 
 ## Getting started (backend)
 
@@ -175,6 +182,35 @@ The React staff area at `/admin` is where the work happens: summary counts, list
 The Django Admin at `/django-admin/` (set by `DJANGO_ADMIN_URL`; not `/admin/`, which is the React staff area) manages categories, user roles and the payment instructions. Requests are **read-only** there, and listing status cannot be changed there, so that every status change goes through the audited workflow. Listing edits made in Django Admin are written to the audit log.
 
 Uploaded images must be JPEG, PNG or WebP (checked by content, not just extension), at most 5 MB, and between 400 and 6000 px per side. Stored file names are random. The client's file name is never used.
+
+## End-to-end tests
+
+Playwright drives a real browser through the marketplace browsing flows: the homepage (featured listings, categories, hero search, navigation), the marketplace (search, category, breed and price filters, sorting, pagination, filters kept in the URL across reloads and the back button, empty, loading and error states) and listing details (facts, gallery, related listings, sold and reserved animals, seller contact kept private, unknown listings). Every test runs on desktop Chromium and on a phone-sized Chromium (Pixel 7), where filters sit behind a toggle and the navbar uses the mobile menu.
+
+One-time setup, from `frontend/`:
+
+```bash
+npm ci
+npx playwright install chromium
+```
+
+Then `npm run test:e2e`. It needs PostgreSQL running (`docker compose up -d db`), the backend virtualenv in `backend/.venv`, and the root `.env`. Playwright starts its own servers:
+
+- **Django** on `127.0.0.1:8100`, through `e2e/support/start-backend.sh`. Each start drops and recreates the `mkulima_e2e` database, migrates it, loads the 14 sample listings and keeps uploaded photos in a temporary folder. The reset script refuses any database whose name does not end in `_e2e`, so your development database is never touched. Request logs go to `frontend/test-results/e2e-backend.log`.
+- **Vite** on `127.0.0.1:5174`, proxying `/api` and `/media` to that Django.
+
+Locally, servers already running on those ports are reused, so a second run starts faster. The tests only read data, so a reused backend is safe. In CI (`CI` set) both servers always start fresh, tests retry twice and `test.only` fails the run.
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `E2E_BACKEND_PORT` / `E2E_FRONTEND_PORT` | 8100 / 5174 | Ports for the two servers |
+| `E2E_POSTGRES_DB` | `mkulima_e2e` | Database to recreate; must end in `_e2e` |
+| `E2E_PYTHON` | `backend/.venv/bin/python` | Python with the backend requirements |
+| `E2E_BASE_URL` | (unset) | Run against an already running site instead and start no servers. Only use it on a site seeded with the sample data and nothing else, because the tests expect exact listings. |
+
+The expected listings are in `e2e/helpers/sample-data.ts`, taken from `backend/livestock/sample_data/sample_data.json`. If the sample data changes, update that file. Failed tests keep a trace, a screenshot and an HTML report (`npx playwright show-report`).
+
+Locators use roles and accessible names, as a user or screen reader finds things. The one exception is `data-testid="listing-facts"` on the details list: a `<dl>` has no role or name, and related-listing cards contain their own terms.
 
 ## Running the production stack locally
 
@@ -297,6 +333,7 @@ Run all of these before a release:
 | Frontend lint | `cd frontend && npm run lint` | 0 warnings |
 | Frontend tests | `npm test` | 88 passed |
 | Production build | `npm run build` | Succeeds, no size warning |
+| Browser tests | `npm run typecheck:e2e && npm run test:e2e` | 59 passed, 1 skipped (desktop skips the phone-only test) |
 | Secret scan | `gitleaks dir` over the files Git would commit | No leaks |
 
 What the backend tests cover beyond the earlier phases:
@@ -327,7 +364,9 @@ Base path `/api/`. JSON only (photo upload uses multipart). Session authenticati
 | GET | `/categories/` | Public | Active categories |
 | GET | `/categories/{slug}/` | Public | One active category |
 | GET | `/payment-instructions/` | Public | `is_placeholder` is true until an administrator enters real payment details |
-| POST | `/inquiries/` | Public, 10/hour | `listing`, `full_name`, `phone`, `email?`, `message` |
+| POST | `/inquiries/` | Public; 30/hour per IP for guests, 10/hour per account when signed in | `listing`, `full_name`, `phone`, `email?`, `message`. A second open inquiry for the same animal returns 400 on `listing` (signed in: the message names the open reference; guests: it does not). |
+| POST | `/inquiries/track/` | Public, 30/hour per IP | `reference`, `phone`. Returns reference, listing, status and history only, never the contact details or message. A wrong reference or phone returns the same 404. POST keeps the phone number out of URLs and logs. |
+| POST | `/inquiries/{reference}/cancel/` | Signed in, own inquiry | `reason?`. Open inquiries only (completed returns 409); repeating returns 200. Someone else's reference returns 404. |
 | POST | `/deposits/` | Signed in, 10/hour | `full_name`, `phone`, `amount`, `payment_reference`, `notes?` |
 | POST | `/withdrawals/` | Signed in, 10/hour | `full_name`, `phone`, `amount`, `method` (`mpesa` with `mpesa_number`, or `bank` with `bank_name`, `account_name`, `account_number`), `reason?` |
 | GET | `/inquiries/`, `/deposits/`, `/withdrawals/` | Signed in | Your own records only, newest first |
@@ -424,6 +463,6 @@ When real sellers publish listings, they upload photos of the actual animal, and
 - **No wallet or stored balance,** by design. Withdrawal approval relies on staff checking what the customer is owed. A wallet would need a ledger, row locking, balance constraints and idempotent callbacks before it could be added.
 - **Real business details are still placeholders:** payment instructions, contact details, and the terms and privacy text (which need legal review).
 - **Sample data:** the 14 listings are fictional and their photos show similar animals. End-to-end test records from Phases 3 to 5 (accounts and requests labelled "E2E" or "Race", listing "E2E Sahiwal heifer") are in the development database only.
-- **Not yet built:** password reset by email, email or SMS notifications, customer profile editing, and customers cancelling their own inquiries. There is no outgoing email configuration at all.
+- **Not yet built:** password reset by email, email or SMS notifications (staff check the inquiry queue; buyers check the dashboard or `/track-inquiry`), and customer profile editing. Guest inquiries are not attached to an account created later with the same email, because email addresses are not verified. There is no outgoing email configuration at all.
 - **Operations not included:** monitoring and alerting, automated off-server backups, log shipping and malware scanning of uploads. Images are verified by decoding them and their file names are discarded.
 - **Rate limits** count retries of the same submission, so a customer on a very unstable connection could reach the 10-per-hour limit on money requests sooner than expected.

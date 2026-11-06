@@ -38,6 +38,8 @@ class CustomerRequestViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, v
 
     # Set False to require a signed-in customer for submissions too.
     allow_anonymous_create = True
+    # Applied to `create` only; the default is keyed by `throttle_scope`.
+    create_throttle_class = ScopedRateThrottle
 
     def get_permissions(self):
         if self.action == "create" and self.allow_anonymous_create:
@@ -47,7 +49,7 @@ class CustomerRequestViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, v
     def get_throttles(self):
         throttles = super().get_throttles()
         if self.action == "create":
-            throttles.append(ScopedRateThrottle())
+            throttles.append(self.create_throttle_class())
         return throttles
 
     def get_queryset(self):

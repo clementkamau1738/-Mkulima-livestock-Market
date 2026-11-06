@@ -1,6 +1,20 @@
 import hashlib
 
-from rest_framework.throttling import ScopedRateThrottle, SimpleRateThrottle
+from rest_framework.throttling import ScopedRateThrottle, SimpleRateThrottle, UserRateThrottle
+
+
+class SignedInUserRateThrottle(UserRateThrottle):
+    """The `user` rate for signed-in users only, keyed by user id.
+
+    DRF's UserRateThrottle also counts anonymous requests by IP, so the stricter
+    `user` rate would cap anonymous visitors instead of the `anon` rate meant
+    for them (generous because many mobile users share one carrier IP).
+    Anonymous requests are left to AnonRateThrottle."""
+
+    def get_cache_key(self, request, view):
+        if not (request.user and request.user.is_authenticated):
+            return None
+        return super().get_cache_key(request, view)
 
 
 class IPScopedRateThrottle(ScopedRateThrottle):

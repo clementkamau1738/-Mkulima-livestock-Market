@@ -1,5 +1,5 @@
 import api from './api'
-import { mapPaymentInstructions, mapReceipt } from './mappers'
+import { mapCustomerRequest, mapPaymentInstructions, mapReceipt } from './mappers'
 
 // Each submit takes an idempotency key that the caller keeps for every retry
 // of the same submission, so a retried request can never create a second record.
@@ -17,6 +17,15 @@ export async function submitInquiry(values, idempotencyKey) {
     idempotencyKey,
   )
   return mapReceipt(data)
+}
+
+export const TRACK_FIELDS = { reference: 'reference', phone: 'phone' }
+
+// Guests follow an inquiry with its reference and the phone number they gave.
+// POST keeps the phone number out of URLs. Returns progress only, no contact details.
+export async function trackInquiry(values) {
+  const { data } = await api.post('/inquiries/track/', { reference: values.reference, phone: values.phone })
+  return mapCustomerRequest('inquiries', data)
 }
 
 export const DEPOSIT_FIELDS = {

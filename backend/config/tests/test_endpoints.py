@@ -36,6 +36,10 @@ class EndpointMatrixTests(APITestCase):
         self.inquiry, _ = submit_inquiry(
             listing_id=self.listing.pk, user=self.customer, full_name="A B", phone="+254712345678", email="", message="Hello there"
         )
+        # A second inquiry for the cancel route, so cancelling leaves the one above untouched.
+        self.cancellable, _ = submit_inquiry(
+            listing_id=make_listing().pk, user=self.customer, full_name="A B", phone="+254712345678", email="", message="Hello again"
+        )
         self.deposit, _ = submit_deposit(
             user=self.customer, full_name="A B", phone="+254712345678", amount=Decimal("10"), payment_reference="MATRIX0001"
         )
@@ -59,6 +63,8 @@ class EndpointMatrixTests(APITestCase):
             "payment-instructions": ("get", [], None, PUBLIC),
             "inquiry-list": ("get", [], None, SIGNED_IN),
             "inquiry-detail": ("get", [self.inquiry.reference], None, OWNER_ONLY),
+            "inquiry-track": ("post", [], {}, {"anon": 400, "customer": 400, "staff": 400}),
+            "inquiry-cancel": ("post", [self.cancellable.reference], {}, OWNER_ONLY),
             "deposit-list": ("get", [], None, SIGNED_IN),
             "deposit-detail": ("get", [self.deposit.reference], None, OWNER_ONLY),
             "withdrawal-list": ("get", [], None, SIGNED_IN),

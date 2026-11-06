@@ -43,6 +43,7 @@ export default function Footer() {
                 <li><Link to="/register" className="hover:text-white">Create an account</Link></li>
               </>
             )}
+            <li><Link to="/track-inquiry" className="hover:text-white">Track an inquiry</Link></li>
             <li><Link to="/terms" className="hover:text-white">Terms of use</Link></li>
             <li><Link to="/privacy" className="hover:text-white">Privacy policy</Link></li>
           </ul>

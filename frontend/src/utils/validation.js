@@ -18,6 +18,10 @@ export const rules = {
     required: 'Enter your phone number',
     validate: (v) => KENYAN_PHONE.test(normalizePhone(v)) || 'Enter a valid Kenyan phone number, e.g. 0712 345 678',
   },
+  inquiryReference: {
+    required: 'Enter the reference number from your confirmation',
+    pattern: { value: /^\s*INQ-[A-Z0-9]{8}\s*$/i, message: 'References look like INQ-7KQ2M9XP' },
+  },
   optionalEmail: {
     pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Enter a valid email address' },
   },

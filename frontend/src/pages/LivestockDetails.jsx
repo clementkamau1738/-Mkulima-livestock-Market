@@ -13,6 +13,7 @@ import StatusBadge from '../components/ui/StatusBadge'
 import { EmptyState, ErrorState } from '../components/ui/States'
 import { useAsync } from '../hooks/useAsync'
 import { SHOW_SAMPLE_DATA_NOTICE } from '../config/site'
+import { useAuth } from '../hooks/useAuth'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { getLivestock, getRelatedLivestock } from '../services/livestockService'
 import { formatAge, formatCategory, formatDate, formatKes, formatSex } from '../utils/format'
@@ -59,7 +60,31 @@ function Related({ listing }) {
   )
 }
 
+function FollowUp({ receipt, signedIn }) {
+  if (signedIn) {
+    return (
+      <p>
+        Follow it on{' '}
+        <Link to="/account?tab=inquiries" className="font-semibold text-forest underline-offset-2 hover:underline">
+          your dashboard
+        </Link>
+        . You can cancel it there if your plans change.
+      </p>
+    )
+  }
+  return (
+    <p>
+      Keep the reference number. You can check progress any time on{' '}
+      <Link to={`/track-inquiry?reference=${encodeURIComponent(receipt.reference)}`} className="font-semibold text-forest underline-offset-2 hover:underline">
+        Track an inquiry
+      </Link>{' '}
+      with the phone number you gave.
+    </p>
+  )
+}
+
 function InquiryDialog({ listing, open, onClose }) {
+  const { user } = useAuth()
   const [receipt, setReceipt] = useState(null)
   const close = () => {
     onClose()
@@ -76,6 +101,7 @@ function InquiryDialog({ listing, open, onClose }) {
         <RequestConfirmation title="We have your inquiry" receipt={receipt} actions={<Button onClick={close}>Done</Button>}>
           <p>Your inquiry is pending. Our team will contact you to arrange verification or a viewing.</p>
           <p>This does not reserve or purchase the animal, and no payment has been requested or taken.</p>
+          <FollowUp receipt={receipt} signedIn={Boolean(user)} />
         </RequestConfirmation>
       ) : (
         <InquiryForm listing={listing} onSubmitted={setReceipt} />
@@ -143,7 +169,7 @@ export default function LivestockDetails() {
             {formatKes(listing.priceKes)}
           </p>
 
-          <dl className="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-line/80 bg-line/80">
+          <dl data-testid="listing-facts" className="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-line/80 bg-line/80">
             {facts(listing).map(([label, value]) => (
               <div key={label} className="bg-white p-4 odd:last:col-span-2">
                 <dt className="text-xs font-semibold tracking-[0.12em] text-ink-muted uppercase">{label}</dt>

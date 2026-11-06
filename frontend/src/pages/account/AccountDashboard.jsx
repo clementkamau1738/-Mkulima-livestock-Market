@@ -1,8 +1,14 @@
 import { ArrowRight, ChevronDown, Inbox } from 'lucide-react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { Link, useSearchParams } from 'react-router'
+import { toast } from 'sonner'
 import Pagination from '../../components/livestock/Pagination'
 import StatusTimeline from '../../components/requests/StatusTimeline'
 import Button from '../../components/ui/Button'
+import { TextAreaField } from '../../components/ui/Field'
+import FormError from '../../components/ui/FormError'
+import Modal from '../../components/ui/Modal'
 import PageHeader from '../../components/ui/PageHeader'
 import Skeleton from '../../components/ui/Skeleton'
 import StatusBadge from '../../components/ui/StatusBadge'
@@ -10,7 +16,7 @@ import { EmptyState, ErrorState } from '../../components/ui/States'
 import { useAsync } from '../../hooks/useAsync'
 import { useAuth } from '../../hooks/useAuth'
 import { useDocumentTitle } from '../../hooks/useDocumentTitle'
-import { listMyRequests } from '../../services/accountService'
+import { OPEN_INQUIRY_STATUSES, cancelInquiry, listMyRequests } from '../../services/accountService'
 import { formatDate, formatKes } from '../../utils/format'
 
 const TABS = [
@@ -55,7 +61,62 @@ function summaryLine(item) {
   return `${formatKes(item.amountKes)} · ${item.destination}`
 }
 
-function RequestItem({ item }) {
+function CancelInquiryDialog({ item, open, onClose, onCancelled }) {
+  const [formError, setFormError] = useState(null)
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm({ defaultValues: { reason: '' } })
+
+  const close = () => {
+    reset()
+    setFormError(null)
+    onClose()
+  }
+
+  async function submit({ reason }) {
+    setFormError(null)
+    try {
+      await cancelInquiry(item.reference, reason.trim())
+      toast.success(`Inquiry ${item.reference} cancelled`)
+      close()
+      onCancelled()
+    } catch (error) {
+      setFormError(error.message)
+    }
+  }
+
+  return (
+    <Modal open={open} onClose={close} title="Cancel this inquiry?" description={item.listing?.title}>
+      <form onSubmit={handleSubmit(submit)} noValidate className="space-y-4">
+        <p className="text-sm text-ink-muted">Our team will stop following it up. You can send a new inquiry later if the animal is still listed.</p>
+        <TextAreaField
+          label="Reason"
+          optional
+          rows={3}
+          hint="Shown to our team, e.g. bought elsewhere."
+          error={errors.reason?.message}
+          {...register('reason', { maxLength: { value: 500, message: 'Keep the reason under 500 characters' } })}
+        />
+        <FormError message={formError} />
+        <div className="flex flex-wrap justify-end gap-3">
+          <Button variant="ghost" onClick={close}>
+            Keep inquiry
+          </Button>
+          <Button type="submit" variant="danger" disabled={isSubmitting}>
+            {isSubmitting ? 'Cancelling…' : 'Cancel inquiry'}
+          </Button>
+        </div>
+      </form>
+    </Modal>
+  )
+}
+
+function RequestItem({ item, onChanged }) {
+  const [cancelling, setCancelling] = useState(false)
+  const canCancel = item.kind === 'inquiries' && OPEN_INQUIRY_STATUSES.includes(item.status)
   return (
     <li>
       <details className="group rounded-2xl border border-line/80 bg-white">
@@ -73,17 +134,25 @@ function RequestItem({ item }) {
               {item.reviewNote}
             </p>
           )}
-          {item.listing && (
-            <p className="mb-4 text-sm">
-              <Link to={`/marketplace/${item.listing.id}`} className="font-semibold text-forest hover:underline">
-                View listing
-              </Link>
-            </p>
+          {(item.listing || canCancel) && (
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3 text-sm">
+              {item.listing && (
+                <Link to={`/marketplace/${item.listing.id}`} className="font-semibold text-forest hover:underline">
+                  View listing
+                </Link>
+              )}
+              {canCancel && (
+                <Button variant="danger" size="sm" onClick={() => setCancelling(true)}>
+                  Cancel inquiry
+                </Button>
+              )}
+            </div>
           )}
           <h3 className="mb-3 text-xs font-semibold tracking-[0.12em] text-ink-muted uppercase">Status history</h3>
           <StatusTimeline history={item.history} />
         </div>
       </details>
+      {canCancel && <CancelInquiryDialog item={item} open={cancelling} onClose={() => setCancelling(false)} onCancelled={onChanged} />}
     </li>
   )
 }
@@ -108,7 +177,7 @@ function RequestList({ tab, page, onPage }) {
     <>
       <ul className="space-y-3">
         {data.results.map((item) => (
-          <RequestItem key={item.reference} item={item} />
+          <RequestItem key={item.reference} item={item} onChanged={result.retry} />
         ))}
       </ul>
       <div className="mt-8">

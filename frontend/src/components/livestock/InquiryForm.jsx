@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { useAuth } from '../../hooks/useAuth'
 import { useSubmission } from '../../hooks/useSubmission'
 import { INQUIRY_FIELDS, submitInquiry } from '../../services/requestService'
 import { rules } from '../../utils/validation'
@@ -7,6 +8,7 @@ import { TextAreaField, TextField } from '../ui/Field'
 import FormError from '../ui/FormError'
 
 export default function InquiryForm({ listing, onSubmitted }) {
+  const { user } = useAuth()
   const {
     register,
     handleSubmit,
@@ -14,9 +16,10 @@ export default function InquiryForm({ listing, onSubmitted }) {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      fullName: '',
-      phone: '',
-      email: '',
+      // Signed-in buyers start from their account details; they can still edit them.
+      fullName: user?.fullName ?? '',
+      phone: user?.phone ?? '',
+      email: user?.email ?? '',
       message: `Hello, I am interested in "${listing.title}" in ${listing.location}. Please contact me to arrange a viewing.`,
     },
   })
